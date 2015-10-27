@@ -1,0 +1,43 @@
+=== Genesis Widget Column Classes ===
+Contributors: keraweb
+Tags: genesis, bootstrap, column, widget, dynamik
+Requires at least: 3.6
+Tested up to: 4.3
+Stable tag: 4.3
+
+Adds Genesis column classes to widgets.
+
+== Description ==
+
+As easy as it gets. Add column classes to widgets with a select box, check wether the widget is the first, and save!
+
+I've built this plugin for the Genesis Framework, though it will work with any theme that uses the (old) Bootstrap column classes.
+
+== Installation ==
+
+Installation of this plugin works like any other plugin out there. Either:
+
+1. Upload the zip file to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+
+Or search for "Genesis Widget Column Classes" via your plugins menu.
+
+== Screenshots ==
+
+1. Widget admin view
+
+== Changelog ==
+
+= 1.0.1 =
+
+Some small improvements
+
+= 1.0 =
+
+Created from nothingness just to be one of the cool kids. Yay!
+
+== Other Notes ==
+
+You can find me here:
+
+* [Keraweb](http://www.keraweb.nl/ "Keraweb")
