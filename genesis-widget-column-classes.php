@@ -137,7 +137,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Get the current user
 		$this->curUser = wp_get_current_user();
 
-		$this->column_classes = apply_filters( 'genesis-widget-column-classes', $this->column_classes );
+		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
 
 		if ( isset( $this->curUser->ID ) ) {
 			add_action( 'admin_notices', array( $this, 'genesis_notice' ) ); 
