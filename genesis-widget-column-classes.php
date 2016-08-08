@@ -3,15 +3,15 @@
  * @package Genesis
  * @author Jory Hogeveen
  *
- * Plugin Name:	Genesis Widget Column Classes
- * Description:	Add Genesis (old Bootstrap) column classes to widgets
- * Plugin URI:	https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:		1.1.4
- * Author:		Jory Hogeveen
- * Author URI:	http://www.keraweb.nl
- * Text Domain:	genesis-widget-column-classes
- * Domain Path:	/languages/
- * License:		GPLv2
+ * Plugin Name: Genesis Widget Column Classes
+ * Description: Add Genesis (old Bootstrap) column classes to widgets
+ * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
+ * Version:     1.1.4
+ * Author:      Jory Hogeveen
+ * Author URI:  http://www.keraweb.nl
+ * Text Domain: genesis-widget-column-classes
+ * Domain Path: /languages/
+ * License:     GPLv2
 */
 
 /*
@@ -44,8 +44,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * The single instance of the class.
 	 *
-	 * @since	1.1.3
-	 * @var		WCC_Genesis_Widget_Column_Classes
+	 * @since   1.1.3
+	 * @var     WCC_Genesis_Widget_Column_Classes
 	 */
 	private static $_instance = null;
 
@@ -70,7 +70,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since  1.1.4
 	 * @var    array
-	 */	
+	 */ 
 	private $column_classes = array( 
 		'one-half', 
 		'one-third', 
@@ -90,15 +90,15 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since  1.1
 	 * @var    object
-	 */	
+	 */ 
 	private $curUser = false;
 	
 	/**
 	 * Init function to register plugin hook
 	 *
 	 * @since   1.1
-	 * @access 	private
-	 * @return	void
+	 * @access  private
+	 * @return  void
 	 */
 	private function __construct() {
 		self::$_instance = $this;
@@ -112,11 +112,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * Ensures only one instance of Genesis Widget Column Classes is loaded or can be loaded.
 	 *
-	 * @since	1.1.3
-	 * @access 	public
+	 * @since   1.1.3
+	 * @access  public
 	 * @static
-	 * @see		Genesis_Widget_Column_Classes()
-	 * @return	Genesis Widget Column Classes - Main instance.
+	 * @see     Genesis_Widget_Column_Classes()
+	 * @return  Genesis Widget Column Classes - Main instance.
 	 */
 	public static function get_instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -129,8 +129,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Init function/action and register all used hooks
 	 *
 	 * @since   1.1
-	 * @access 	public
-	 * @return	void
+	 * @access  public
+	 * @return  void
 	 */
 	public function init() {
 		
@@ -156,8 +156,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it
 	 *
 	 * @since   0.1
-	 * @access 	public
-	 * @return	void
+	 * @access  public
+	 * @return  void
 	 */
 	public function genesis_notice() {
 		if ( get_template() != 'genesis' ) {
@@ -179,8 +179,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Store format: Boolean
 	 *
 	 * @since   1.1
-	 * @access 	public
-	 * @return	String
+	 * @access  public
+	 * @return  string
 	 */
 	public function ignore_genesis_notice() {
 		update_user_meta( $this->curUser->ID, $this->noticeKey, $this->version );
@@ -191,10 +191,10 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add options to the widgets
 	 *
 	 * @since   0.1
-	 * @access 	public
-	 * @param	array	$instance
-	 * @param	object	$widget
-	 * @return	Array	$instance
+	 * @access  public
+	 * @param   array   $instance
+	 * @param   object  $widget
+	 * @return  array   $instance
 	 */
 	public function widget_form_extend( $instance, $widget ) {
 
@@ -231,10 +231,10 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the new fields to the update instance
 	 *
 	 * @since   0.1
-	 * @access 	public
-	 * @param	array	$instance
-	 * @param	array	$new_instance
-	 * @return	Array	$instance
+	 * @access  public
+	 * @param   array   $instance
+	 * @param   array   $new_instance
+	 * @return  array   $instance
 	 */
 	public function widget_update( $instance, $new_instance ) {
 
@@ -253,9 +253,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add classes to the widget
 	 *
 	 * @since   0.1
-	 * @access 	public
-	 * @param	array	$params
-	 * @return	array	$params
+	 * @access  public
+	 * @param   array   $params
+	 * @return  array   $params
 	 */
 	public function sidebar_params( $params ) {
 		global $wp_registered_widgets;
@@ -263,23 +263,23 @@ final class WCC_Genesis_Widget_Column_Classes
 		if ( empty( $params[0] ) ) {
 			return $params;
 		}
-		$widget_id	= $params[0]['widget_id'];
+		$widget_id  = $params[0]['widget_id'];
 
 		if ( empty( $wp_registered_widgets[ $widget_id ] ) ) {
 			return $params;
 		}
-		$widget_obj	= $wp_registered_widgets[ $widget_id ];
+		$widget_obj = $wp_registered_widgets[ $widget_id ];
 
 		if ( empty( $widget_obj['callback'][0] ) || empty( $widget_obj['callback'][0]->option_name ) ) {
 			return $params;
 		}
-		$widget_opt	= get_option( $widget_obj['callback'][0]->option_name );
+		$widget_opt = get_option( $widget_obj['callback'][0]->option_name );
 
 		if ( empty( $widget_obj['params'][0]['number'] ) ) {
 			return $params;
 		}
-		$widget_num	= $widget_obj['params'][0]['number'];
-		
+		$widget_num = $widget_obj['params'][0]['number'];
+
 		if ( empty( $widget_opt[ $widget_num ] ) ) {
 			return $params;
 		}
@@ -300,9 +300,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Load plugin textdomain.
 	 *
-	 * @since 	1.1.3
-	 * @access 	public
-	 * @return	void
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
@@ -311,9 +311,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Magic method to output a string if trying to use the object as a string.
 	 *
-	 * @since  1.1.3
-	 * @access public
-	 * @return void
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
 	 */
 	public function __toString() {
 		return get_class( $this );
@@ -322,9 +322,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Magic method to keep the object from being cloned.
 	 *
-	 * @since  1.1.3
-	 * @access public
-	 * @return void
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
 	 */
 	public function __clone() {
 		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'genesis-widget-column-classes' ), '1.0.0' );
@@ -333,9 +333,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Magic method to keep the object from being unserialized.
 	 *
-	 * @since  1.1.3
-	 * @access public
-	 * @return void
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
 	 */
 	public function __wakeup() {
 		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'genesis-widget-column-classes' ), '1.0.0' );
@@ -344,9 +344,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Magic method to prevent a fatal error when calling a method that doesn't exist.
 	 *
-	 * @since  1.1.3
-	 * @access public
-	 * @return null
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
 		_doing_it_wrong( get_class( $this ) . "::{$method}", esc_html__( 'Method does not exist.', 'genesis-widget-column-classes' ), '1.0.0' );
