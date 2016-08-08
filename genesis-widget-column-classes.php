@@ -253,7 +253,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since   0.1
 	 * @access 	public
 	 * @param	array	$params
-	 * @return	Array	$params
+	 * @return	array	$params
 	 */
 	public function sidebar_params( $params ) {
 		global $wp_registered_widgets;
