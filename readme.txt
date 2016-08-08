@@ -14,6 +14,11 @@ As easy as it gets. Add column classes to widgets with a select box, check wethe
 
 I've built this plugin for the Genesis Framework, though it will work with any theme that uses the (old) Bootstrap column classes.
 
+= Filter: `genesis_widget_column_classes` =
+Allows you to change the available column classes
+
+*	**Parameters:** array (default column classes)
+
 == Installation ==
 
 Installation of this plugin works like any other plugin out there. Either:
