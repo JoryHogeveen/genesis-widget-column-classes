@@ -257,9 +257,25 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function sidebar_params( $params ) {
 		global $wp_registered_widgets;
+
+		if ( empty( $params[0] ) ) {
+			return $params;
+		}
 		$widget_id	= $params[0]['widget_id'];
+
+		if ( empty( $wp_registered_widgets[ $widget_id ] ) ) {
+			return $params;
+		}
 		$widget_obj	= $wp_registered_widgets[ $widget_id ];
+
+		if ( empty( $widget_obj['callback'][0] ) || empty( $widget_obj['callback'][0]->option_name ) ) {
+			return $params;
+		}
 		$widget_opt	= get_option( $widget_obj['callback'][0]->option_name );
+
+		if ( empty( $widget_obj['params'][0]['number'] ) ) {
+			return $params;
+		}
 		$widget_num	= $widget_obj['params'][0]['number'];
 		
 		$widget_extra_classes = '';
