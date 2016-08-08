@@ -137,6 +137,12 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Get the current user
 		$this->curUser = wp_get_current_user();
 
+		/**
+		 * Change the default column classes
+		 * 
+		 * @since  1.1.4
+		 * @param  array  The column classes
+		 */
 		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
 
 		if ( isset( $this->curUser->ID ) ) {
