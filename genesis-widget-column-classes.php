@@ -280,8 +280,12 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 		$widget_num	= $widget_obj['params'][0]['number'];
 		
+		if ( empty( $widget_opt[ $widget_num ] ) ) {
+			return $params;
+		}
+		
 		$widget_extra_classes = '';
-		if ( isset( $widget_opt[ $widget_num ]['column-classes'] ) && ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
+		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
 			$widget_extra_classes .= $widget_opt[ $widget_num ]['column-classes'].' ';
 		}
 		if ( isset( $widget_opt[ $widget_num ]['column-classes-first'] ) && 1 == $widget_opt[ $widget_num ]['column-classes-first'] ) {
