@@ -144,7 +144,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
 		add_filter( 'widget_form_callback', array( $this, 'widget_form_extend' ), 10, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update' ), 10, 2 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'sidebar_params' ) );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'sidebar_params' ), 99999 ); // Make sure to be the last one
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 
 	}
