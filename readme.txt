@@ -37,7 +37,7 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 = 1.1.4 =
 
 *	Usage of the WP_Widget object for generating input names and ID's
-*	Add filter `genesis-widget-column-classes` to add/modify available column classes
+*	Add filter `genesis_widget_column_classes` to add/modify available column classes
 
 = 1.1.3 =
 
