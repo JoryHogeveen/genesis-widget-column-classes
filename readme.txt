@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, bootstrap, column, widget, dynamik
 Requires at least: 3.1
 Tested up to: 4.6
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 
 Adds Genesis column classes to widgets.
 
