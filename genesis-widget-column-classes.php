@@ -289,8 +289,6 @@ final class WCC_Genesis_Widget_Column_Classes
 		if ( empty( $widget_opt[ $widget_num ] ) ) {
 			return $params;
 		}
-		
-		$widget_extra_classes = '';
 
 		/**
 		 * Compat with plugins that filter the display callback
@@ -309,16 +307,94 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $params;
 		}
 
+		$classes_extra = '';
 		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
-			$widget_extra_classes .= $widget_opt[ $widget_num ]['column-classes'].' ';
+			$classes_extra .= $widget_opt[ $widget_num ]['column-classes'].' ';
 		}
 		if ( isset( $widget_opt[ $widget_num ]['column-classes-first'] ) && 1 == $widget_opt[ $widget_num ]['column-classes-first'] ) {
-			$widget_extra_classes .= 'first ';
+			$classes_extra .= 'first ';
+		}
+
+		if ( ! empty( $classes_extra ) ) {
+
+			if ( ! empty( $params[0]['before_widget'] ) ) {
+				// Add the classes
+				$params[0]['before_widget'] = $this->append_to_attribute( $params[0]['before_widget'], 'class', $classes_extra, true );
+			}
+
+			//$params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 		}
 	
-		$params[0]['before_widget'] = preg_replace( '/class="/', 'class="'.$widget_extra_classes , $params[0]['before_widget'], 1 );
-	
 		return $params;
+	}
+
+	/**
+	 * Find the class attribute and add the classes in a HTML string
+	 * 
+	 * @since 1.1.5
+	 * 
+	 * @param  string  $str
+	 * @param  string  $attr           The attribute to find
+	 * @param  string  $content_extra  The content that needs to be appended
+	 * @param  bool    $unique         Do we need to filter for unique values?
+	 * 
+	 * @return string
+	 */
+	public function append_to_attribute( $str, $attr, $content_extra, $unique = false ) {
+
+		// Find attr with double quotes
+		if ( $start = stripos( $str, $attr . '="' ) ) {
+			$quote = '"';
+
+		// Find attr with single quotes
+		} elseif( $start = stripos( $str, $attr . "='" ) ) {
+			$quote = "'";
+
+		// Not found
+		} else {
+			return $str;
+		}
+
+		// Add quote (for filtering purposes)
+		$attr .= '=' . $quote;
+
+		$content_extra = trim( $content_extra );
+
+		if ( $unique ) {
+			
+			// Set start pointer to after "
+			$start += strlen( $attr );
+			// Find first " after the start pointer
+			$end = strpos( $str, $quote, $start );
+			// Get the current content
+			$content = explode( ' ', substr( $str, $start, $end - $start ) );
+			// Get our extra content
+			$content_extra = explode( ' ', $content_extra );
+			foreach ( $content_extra as $class ) {
+				if ( ! empty( $class ) && ! in_array( $class, $content ) ) {
+					// This one can be added!
+					$content[] = $class;
+				}
+			}
+			// Remove duplicates
+			$content = array_unique( $content );
+			// Convert to space separated string
+			$content = implode( ' ', $content );
+			// Get HTML before content
+			$before_content = substr( $str, 0, $start );
+			// Get HTML after content
+			$after_content = substr( $str, $end );
+
+			// Combine the string again
+			$str = $before_content . $content . $after_content;
+
+		} else {
+
+			$str = str_replace( $attr, $attr . $content_extra . ' ' , $str );
+		}
+
+		// Return full HTML string
+		return $str;
 	}
 	
 	/**
