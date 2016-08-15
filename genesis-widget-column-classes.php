@@ -3,15 +3,15 @@
  * @package Genesis
  * @author Jory Hogeveen
  *
- * Plugin Name: Genesis Widget Column Classes
- * Description: Add Genesis (old Bootstrap) column classes to widgets
- * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:     1.1.4
- * Author:      Jory Hogeveen
- * Author URI:  http://www.keraweb.nl
- * Text Domain: genesis-widget-column-classes
- * Domain Path: /languages/
- * License:     GPLv2
+ * Plugin Name:	Genesis Widget Column Classes
+ * Description:	Add Genesis (old Bootstrap) column classes to widgets
+ * Plugin URI:	https://wordpress.org/plugins/genesis-widget-column-classes/
+ * Version:		1.1.5-dev
+ * Author:		Jory Hogeveen
+ * Author URI:	http://www.keraweb.nl
+ * Text Domain:	genesis-widget-column-classes
+ * Domain Path:	/languages/
+ * License:		GPLv2
 */
 
 /*
@@ -55,7 +55,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1
 	 * @var    string
 	 */
-	private $version = '1.1.4';
+	private $version = '1.1.5';
 
 	/**
 	 * User ignore nag key
