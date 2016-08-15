@@ -291,6 +291,24 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 		
 		$widget_extra_classes = '';
+
+		/**
+		 * Compat with plugins that filter the display callback
+		 * 
+		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
+		 * 
+		 * @since 1.1.5
+		 * 
+		 * @param array     $instance The current widget instance's settings.
+		 * @param WP_Widget $this     The current widget instance.
+		 * @param array     $args     An array of default widget arguments.
+		 */
+		$widget_opt[ $widget_num ] = apply_filters( 'widget_display_callback', $widget_opt[ $widget_num ], $widget_obj['callback'][0], $params[0] );
+
+		if ( ! is_array( $widget_opt[ $widget_num ] ) ) {
+			return $params;
+		}
+
 		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
 			$widget_extra_classes .= $widget_opt[ $widget_num ]['column-classes'].' ';
 		}
