@@ -153,7 +153,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		add_filter( 'widget_form_callback', array( $this, 'widget_form_extend' ), 10, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'widget_update' ), 10, 2 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'sidebar_params' ), 99999 ); // Make sure to be the last one
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 	}
 	
