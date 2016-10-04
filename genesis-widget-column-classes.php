@@ -413,7 +413,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   1.1.3
 	 * @access  public
-	 * @return  void
+	 * @return  string
 	 */
 	public function __toString() {
 		return get_class( $this );
@@ -427,7 +427,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  void
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'genesis-widget-column-classes' ), '1.0.0' );
+		_doing_it_wrong(
+			__FUNCTION__,
+			get_class( $this ) . ': ' . esc_html__( 'This class does not want to be cloned', 'view-admin-as' ),
+			null
+		);
 	}
 
 	/**
@@ -438,7 +442,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  void
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Whoah, partner!', 'genesis-widget-column-classes' ), '1.0.0' );
+		_doing_it_wrong(
+			__FUNCTION__,
+			get_class( $this ) . ': ' . esc_html__( 'This class does not want to wake up', 'view-admin-as' ),
+			null
+		);
 	}
 
 	/**
@@ -449,7 +457,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
-		_doing_it_wrong( get_class( $this ) . "::{$method}", esc_html__( 'Method does not exist.', 'genesis-widget-column-classes' ), '1.0.0' );
+		_doing_it_wrong(
+			get_class( $this ) . "::{$method}",
+			esc_html__( 'Method does not exist.', 'view-admin-as' ),
+			null
+		);
 		unset( $method, $args );
 		return null;
 	}
