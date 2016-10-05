@@ -454,6 +454,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   1.1.3
 	 * @access  public
+	 * @param   string
+	 * @param   array
 	 * @return  null
 	 */
 	public function __call( $method = '', $args = array() ) {
