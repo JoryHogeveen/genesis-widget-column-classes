@@ -6,7 +6,7 @@
  * Plugin Name: Genesis Widget Column Classes
  * Description: Add Genesis (old Bootstrap) column classes to widgets
  * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:     1.1.5
+ * Version:     1.2
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: genesis-widget-column-classes
@@ -33,12 +33,12 @@
  * MA 02110-1301, USA.
  *
  */
- 
+
 ! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
 
 if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
-	
-final class WCC_Genesis_Widget_Column_Classes 
+
+final class WCC_Genesis_Widget_Column_Classes
 {
 
 	/**
@@ -55,7 +55,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1
 	 * @var    string
 	 */
-	private $version = '1.1.5';
+	private $version = '1.2';
 
 	/**
 	 * User ignore nag key
@@ -64,35 +64,35 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @var    string
 	 */
 	private $noticeKey = 'wcc_ignore_genesis_notice';
-	
+
 	/**
 	 * Array of possible column classes
 	 *
 	 * @since  1.1.4
 	 * @var    array
-	 */ 
-	private $column_classes = array( 
-		'one-half', 
-		'one-third', 
-		'one-fourth', 
-		'one-sixth', 
-		'two-thirds', 
-		'two-fourths', 
+	 */
+	private $column_classes = array(
+		'one-half',
+		'one-third',
+		'one-fourth',
+		'one-sixth',
+		'two-thirds',
+		'two-fourths',
 		'two-sixths',
 		'three-fourths',
 		'three-sixths',
 		'four-sixths',
 		'five-sixths'
 	);
-	
+
 	/**
 	 * Current user object
 	 *
 	 * @since  1.1
 	 * @var    object
-	 */ 
+	 */
 	private $curUser = false;
-	
+
 	/**
 	 * Init function to register plugin hook
 	 *
@@ -102,11 +102,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	private function __construct() {
 		self::$_instance = $this;
-		
+
 		// Lets start!
 		add_action( 'init', array( $this, 'init' ) );
 	}
-	
+
 	/**
 	 * Main Genesis Widget Column Classes Instance.
 	 *
@@ -133,20 +133,20 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  void
 	 */
 	public function init() {
-		
+
 		// Get the current user
 		$this->curUser = wp_get_current_user();
 
 		/**
 		 * Change the default column classes
-		 * 
+		 *
 		 * @since  1.1.4
 		 * @param  array  The column classes
 		 */
 		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
 
 		if ( isset( $this->curUser->ID ) ) {
-			add_action( 'admin_notices', array( $this, 'genesis_notice' ) ); 
+			add_action( 'admin_notices', array( $this, 'genesis_notice' ) );
 			add_action( 'wp_ajax_'.$this->noticeKey, array( $this, 'ignore_genesis_notice' ) );
 		}
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
@@ -156,7 +156,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		add_action( 'init', array( $this, 'load_textdomain' ) );
 
 	}
-	
+
 	/**
 	 * Add notice when theme is nog based on the Genesis Framework
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it
@@ -177,7 +177,7 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 	}
-	
+
 	/**
 	 * AJAX handler
 	 * Stores plugin version
@@ -192,7 +192,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		update_user_meta( $this->curUser->ID, $this->noticeKey, $this->version );
 		wp_die();
 	}
-	
+
 	/**
 	 * Add options to the widgets
 	 *
@@ -204,35 +204,35 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function widget_form_extend( $instance, $widget ) {
 
-		$instance = wp_parse_args( (array) $instance, 
-			array( 
-				'column-classes' => '', 
-				'column-classes-first' => '' 
-			) 
+		$instance = wp_parse_args( (array) $instance,
+			array(
+				'column-classes' => '',
+				'column-classes-first' => ''
+			)
 		);
-		
-		
+
+
 		$row = '<p style="border: 1px solid #eee; padding: 5px; background: #f5f5f5;">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __('Width', 'genesis-widget-column-classes') . ':</label> ';
 		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
-		
+
 		$row .= '<option value="">- ' . __('none', 'genesis-widget-column-classes') . ' -</option>';
-		
+
 		foreach ( $this->column_classes as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
 				$row .= '<option value="' . $class_name . '" ' . selected( $instance['column-classes'], $class_name, false ) . '>' . $class_label . '</option>';
 			}
 		}
-	
+
 		$row .= '</select>';
 		$row .= ' <label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __('First', 'genesis-widget-column-classes') . ':</label> <input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
-	
+
 		echo $row;
 		return $instance;
 	}
-	
+
 	/**
 	 * Add the new fields to the update instance
 	 *
@@ -254,7 +254,7 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		return $instance;
 	}
-	
+
 	/**
 	 * Add classes to the widget
 	 *
@@ -292,11 +292,11 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		/**
 		 * Compat with plugins that filter the display callback
-		 * 
+		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
-		 * 
+		 *
 		 * @since 1.1.5
-		 * 
+		 *
 		 * @param array     $instance The current widget instance's settings.
 		 * @param WP_Widget $this     The current widget instance.
 		 * @param array     $args     An array of default widget arguments.
@@ -324,20 +324,20 @@ final class WCC_Genesis_Widget_Column_Classes
 
 			//$params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 		}
-	
+
 		return $params;
 	}
 
 	/**
 	 * Find the class attribute and add the classes in a HTML string
-	 * 
+	 *
 	 * @since 1.1.5
-	 * 
+	 *
 	 * @param  string  $str
 	 * @param  string  $attr           The attribute to find
 	 * @param  string  $content_extra  The content that needs to be appended
 	 * @param  bool    $unique         Do we need to filter for unique values?
-	 * 
+	 *
 	 * @return string
 	 */
 	public function append_to_attribute( $str, $attr, $content_extra, $unique = false ) {
@@ -361,7 +361,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		$content_extra = trim( $content_extra );
 
 		if ( $unique ) {
-			
+
 			// Set start pointer to after "
 			$start += strlen( $attr );
 			// Find first " after the start pointer
@@ -396,7 +396,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Return full HTML string
 		return $str;
 	}
-	
+
 	/**
 	 * Load plugin textdomain.
 	 *
@@ -467,7 +467,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		unset( $method, $args );
 		return null;
 	}
-	
+
 }
 
 /**
