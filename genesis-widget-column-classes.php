@@ -295,7 +295,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
 		 *
-		 * @since 1.1.5
+		 * @since 1.2
 		 *
 		 * @param array     $instance The current widget instance's settings.
 		 * @param WP_Widget $this     The current widget instance.
@@ -331,7 +331,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Find the class attribute and add the classes in a HTML string
 	 *
-	 * @since 1.1.5
+	 * @since 1.2
 	 *
 	 * @param  string  $str
 	 * @param  string  $attr           The attribute to find
