@@ -97,7 +97,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Current user object.
 	 *
 	 * @since  1.1
-	 * @var    object
+	 * @var    WP_User
 	 */
 	private $curUser = null;
 
