@@ -177,10 +177,10 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function genesis_notice() {
 		if ( 'genesis' !== get_template() ) {
-			if ( $this->version !== get_user_meta( $this->curUser->ID, $this->noticeKey, true ) ) {
+			if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 				$class = 'notice notice-warning is-dismissible';
 				$message = '<strong>' . __( 'Genesis Widget Column Classes', 'genesis-widget-column-classes' ) . ':</strong> ';
-				$message .= sprintf( __( 'The %s is recommended to ensure that Genesis Widget Column Classes will work properly', 'genesis-widget-column-classes' ), '<a href="http://my.studiopress.com/themes/genesis/" target="_blank">Genesis Framework</a>');
+				$message .= sprintf( __( 'The %s is recommended to ensure that Genesis Widget Column Classes will work properly', 'genesis-widget-column-classes' ), '<a href="http://my.studiopress.com/themes/genesis/" target="_blank">Genesis Framework</a>' );
 				$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'genesis-widget-column-classes' ) . '</span></a>';
 				$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
 				echo '<div id="' . $this->noticeKey . '" class="' . $class . '"> <p>' . $message . '</p> ' . $ignore . $script . '</div>';
