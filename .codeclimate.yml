@@ -1,0 +1,81 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    config:
+      rulesets: "tests/phpmd.xml"
+  phpcodesniffer:
+    enabled: true
+    config:
+      standard: "Wordpress-Extra"
+    checks:
+      # Disable: Member variable "" is not in valid snake_case format
+      WordPress NamingConventions ValidVariableName MemberNotSnakeCase:
+        enabled: false
+      # Disable: Object property "" is not in valid snake_case format
+      WordPress NamingConventions ValidVariableName NotSnakeCaseMemberVar:
+        enabled: false
+      # Disable: Method name "" in class "" is not in snake case format, try ""
+      WordPress NamingConventions ValidFunctionName MethodNameInvalid:
+        enabled: false
+      # Disable: Opening brace should be on the same line as the declaration for class
+      WordPress Classes ClassOpeningStatement BraceOnNewLine:
+        enabled: false
+      # Disable: Overriding WordPress globals is prohibited
+      WordPress Variables GlobalVariables OverrideProhibited:
+        enabled: false
+      # Disable: Expected # space before "!"; # found
+      WordPress WhiteSpace OperatorSpacing SpacingBefore:
+        enabled: false
+      # Disable: Blank line found after control structure
+      WordPress WhiteSpace ControlStructureSpacing BlankLineAfterEnd:
+        enabled: false
+      # Disable: The $domain arg should be single a string literal, not "".
+      WordPress WP I18n NonSingularStringLiteralDomain:
+        enabled: false
+      # Disable: Expected next thing to be an escaping function (see Codex for 'Data Validation'), not ''
+      WordPress XSS EscapeOutput OutputNotEscaped:
+        enabled: false
+      # Disable: The use of function "" is discouraged
+      WordPress PHP DiscouragedFunctions Discouraged:
+        enabled: false
+      # Disable: Expected # spaces after parameter type; # found
+      Squiz Commenting FunctionComment SpacingAfterParamType:
+        enabled: false
+      # Disable: This comment is #% valid code; is this commented out code?
+      Squiz PHP CommentedOutCode Found:
+        enabled: false
+      # Disable: String "" does not require double quotes; use single quotes instead
+      Squiz Strings DoubleQuoteUsage NotRequired:
+        enabled: false
+      # Disable: Expected 1 space after closing brace; newline found
+      Squiz ControlStructures ControlSignature SpaceAfterCloseBrace:
+        enabled: false
+      # Disable: There must be exactly one blank line before the tags in a doc comment
+      Generic Commenting DocComment SpacingBeforeTags:
+        enabled: false
+      # Disable: Inline control structures are not allowed
+      Generic ControlStructures InlineControlStructure NotAllowed:
+        enabled: false
+      # Disable: Line indented incorrectly; expected at least # tabs, found #
+      Generic WhiteSpace ScopeIndent Incorrect:
+        enabled: false
+      Generic WhiteSpace ScopeIndent IncorrectExact:
+        enabled: false
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+exclude_paths:
+- tests/*
+- bin/*
