@@ -12,9 +12,7 @@
  * Text Domain: genesis-widget-column-classes
  * Domain Path: /languages/
  * License:     GPLv2
-*/
-
-/*
+ *
  * Copyright 2015-2016 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
@@ -34,7 +32,9 @@
  *
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
 
@@ -44,7 +44,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1
- * @version 1.2.1
+ * @version 1.2.2
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -180,6 +180,7 @@ final class WCC_Genesis_Widget_Column_Classes
 			if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 				$class = 'notice notice-warning is-dismissible';
 				$message = '<strong>' . __( 'Genesis Widget Column Classes', 'genesis-widget-column-classes' ) . ':</strong> ';
+				// Translators: %s stands for "Genesis Framework".
 				$message .= sprintf( __( 'The %s is recommended to ensure that Genesis Widget Column Classes will work properly', 'genesis-widget-column-classes' ), '<a href="http://my.studiopress.com/themes/genesis/" target="_blank">Genesis Framework</a>' );
 				$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'genesis-widget-column-classes' ) . '</span></a>';
 				$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
@@ -268,6 +269,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add classes to the widget.
 	 *
+	 * // Disable variable check because of global $wp_registered_widgets.
+	 * @SuppressWarnings(PHPMD.LongVariables)
+	 *
 	 * @since   0.1
 	 * @access  public
 	 * @param   array   $params
@@ -321,7 +325,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
 			$classes_extra .= $widget_opt[ $widget_num ]['column-classes'] . ' ';
 		}
-		if ( isset( $widget_opt[ $widget_num ]['column-classes-first'] ) && 1 === (int) $widget_opt[ $widget_num ]['column-classes-first'] ) {
+		if ( ! empty( $widget_opt[ $widget_num ]['column-classes-first'] ) ) {
 			$classes_extra .= 'first ';
 		}
 
@@ -354,12 +358,16 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function append_to_attribute( $str, $attr, $content_extra, $unique = false ) {
 
 		// Check if attribute has single or double quotes.
+		// @codingStandardsIgnoreLine
 		if ( $start = stripos( $str, $attr . '="' ) ) {
 			// Double.
 			$quote = '"';
+
+		// @codingStandardsIgnoreLine
 		} elseif ( $start = stripos( $str, $attr . "='" ) ) {
 			// Single.
 			$quote = "'";
+
 		} else {
 			// Not found
 			return $str;
@@ -492,4 +500,4 @@ function genesis_widget_column_classes() {
 }
 genesis_widget_column_classes();
 
-} // end if class_exists
+} // End if().

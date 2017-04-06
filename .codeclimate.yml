@@ -16,6 +16,9 @@ engines:
     config:
       standard: "Wordpress-Extra"
     checks:
+      # Disable: Class file names should be based on the class name with "class-" prepended.
+      WordPress Files FileName InvalidClassFileName:
+        enabled: false
       # Disable: Member variable "" is not in valid snake_case format
       WordPress NamingConventions ValidVariableName MemberNotSnakeCase:
         enabled: false
@@ -57,6 +60,9 @@ engines:
         enabled: false
       # Disable: Expected 1 space after closing brace; newline found
       Squiz ControlStructures ControlSignature SpaceAfterCloseBrace:
+        enabled: false
+      # Disable: Opening brace should be on the same line as the declaration for class
+      Generic Classes OpeningBraceSameLine BraceOnNewLine:
         enabled: false
       # Disable: There must be exactly one blank line before the tags in a doc comment
       Generic Commenting DocComment SpacingBeforeTags:
