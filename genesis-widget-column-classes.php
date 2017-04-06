@@ -247,20 +247,21 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the new fields to the update instance.
 	 *
 	 * @since   0.1
+	 * @since   0.2.2   Do not save empty data.
 	 * @access  public
 	 * @param   array   $instance
 	 * @param   array   $new_instance
 	 * @return  array   $instance
 	 */
 	public function widget_update( $instance, $new_instance ) {
-		$instance['column-classes'] = '';
-		$instance['column-classes-first'] = '';
+		unset( $instance['column-classes'] );
+		unset( $instance['column-classes-first'] );
 
-		if ( isset( $new_instance['column-classes'] ) ) {
+		if ( ! empty( $new_instance['column-classes'] ) ) {
 			$instance['column-classes'] = esc_attr( $new_instance['column-classes'] );
 		}
-		if ( isset( $new_instance['column-classes-first'] ) ) {
-			$instance['column-classes-first'] = '1';
+		if ( ! empty( $new_instance['column-classes-first'] ) ) {
+			$instance['column-classes-first'] = true;
 		}
 
 		return $instance;
