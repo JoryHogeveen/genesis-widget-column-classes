@@ -155,8 +155,8 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
 		add_filter( 'widget_form_callback', array( $this, 'widget_form_extend' ), 10, 2 );
-		add_filter( 'widget_update_callback', array( $this, 'widget_update' ), 10, 2 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'sidebar_params' ), 99999 ); // Make sure to be the last one
+		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 2 );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one
 	}
 
 	/**
@@ -245,7 +245,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @param   array   $new_instance
 	 * @return  array   $instance
 	 */
-	public function widget_update( $instance, $new_instance ) {
+	public function widget_update_callback( $instance, $new_instance ) {
 		unset( $instance['column-classes'] );
 		unset( $instance['column-classes-first'] );
 
@@ -270,10 +270,10 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @param   array   $params
 	 * @return  array   $params
 	 */
-	public function sidebar_params( $params ) {
+	public function dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
-		if ( empty( $params[0] ) ) {
+		if ( empty( $params[0]['widget_id'] ) ) {
 			return $params;
 		}
 		$widget_id  = $params[0]['widget_id'];
