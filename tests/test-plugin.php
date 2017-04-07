@@ -38,6 +38,7 @@ class PluginTest extends WP_UnitTestCase {
 				'data'   => 'one one two three',
 				'result' => '<div class="test one two three">',
 			),
+			// Single quotes.
 			array(
 				'start'  => "<div class='test'>",
 				'data'   => 'one two three',
@@ -47,6 +48,18 @@ class PluginTest extends WP_UnitTestCase {
 				'start'  => "<div class='test one two'>",
 				'data'   => 'one one two three',
 				'result' => "<div class='test one two three'>",
+			),
+			// Multiple elements (only first attribute found should be modified).
+			array(
+				'start'  => '<div class="test one one two"><p class="test"></p>',
+				'data'   => 'one two three',
+				'result' => '<div class="test one two three"><p class="test"></p>',
+			),
+			// @todo Should this happen?
+			array(
+				'start'  => '<div><p class="test"></p>',
+				'data'   => 'one two three',
+				'result' => '<div><p class="test one two three"></p>',
 			),
 		);
 
