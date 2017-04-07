@@ -219,7 +219,7 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		$row .= '<option value="">- ' . __( 'none', 'genesis-widget-column-classes' ) . ' -</option>';
 
-		foreach ( $this->column_classes as $class_name ) {
+		foreach ( $this->get_column_classes() as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
 				$row .= '<option value="' . $class_name . '" ' . selected( $instance['column-classes'], $class_name, false ) . '>' . $class_label . '</option>';
