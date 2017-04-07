@@ -6,7 +6,7 @@
  * Plugin Name: Genesis Widget Column Classes
  * Description: Add Genesis (old Bootstrap) column classes to widgets
  * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:     1.2.1
+ * Version:     1.2.2
  * Author:      Jory Hogeveen
  * Author URI:  http://www.keraweb.nl
  * Text Domain: genesis-widget-column-classes
@@ -63,7 +63,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1
 	 * @var    string
 	 */
-	private $version = '1.2';
+	private $version = '1.2.2';
 
 	/**
 	 * User ignore nag key.
@@ -80,17 +80,17 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @var    array
 	 */
 	private $column_classes = array(
-		'one-half',
-		'one-third',
-		'one-fourth',
-		'one-sixth',
-		'two-thirds',
-		'two-fourths',
-		'two-sixths',
-		'three-fourths',
-		'three-sixths',
-		'four-sixths',
-		'five-sixths',
+		'one-half'      => 'one-half',
+		'one-third'     => 'one-third',
+		'one-fourth'    => 'one-fourth',
+		'one-sixth'     => 'one-sixth',
+		'two-thirds'    => 'two-thirds',
+		'two-fourths'   => 'two-fourths',
+		'two-sixths'    => 'two-sixths',
+		'three-fourths' => 'three-fourths',
+		'three-sixths'  => 'three-sixths',
+		'four-sixths'   => 'four-sixths',
+		'five-sixths'   => 'five-sixths',
 	);
 
 	/**
