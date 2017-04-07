@@ -314,23 +314,44 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $params;
 		}
 
-		$classes_extra = '';
-		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
-			$classes_extra .= $widget_opt[ $widget_num ]['column-classes'] . ' ';
-		}
-		if ( ! empty( $widget_opt[ $widget_num ]['column-classes-first'] ) ) {
-			$classes_extra .= 'first ';
-		}
+		$params[0] = $this->add_widget_classes( $widget_opt[ $widget_num ], $params[0] );
+		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 
-		if ( ! empty( $classes_extra ) ) {
+		return $params;
+	}
 
-			if ( ! empty( $params[0]['before_widget'] ) ) {
-				// Add the classes.
-				// @todo What if the before_widget tag doesn't have a `class` attribute?
-				$params[0]['before_widget'] = $this->append_to_attribute( $params[0]['before_widget'], 'class', $classes_extra, true );
+	/**
+	 * Add the classes to the widget parameters.
+	 *
+	 * @since   1.2.2
+	 * @param   array  $widget_instance  The widget instance.
+	 * @param   array  $params           The widget (sidebar) params.
+	 * @param   array  $classes          (optional) The classes.
+	 * @return  array
+	 */
+	public function add_widget_classes( $widget_instance, $params, $classes = array() ) {
+
+		if ( empty( $classes ) ) {
+
+			$classes = array();
+			if ( ! empty( $widget_instance['column-classes'] ) ) {
+				$classes[] = $widget_instance['column-classes'];
 			}
+			if ( ! empty( $widget_instance['column-classes-first'] ) ) {
+				$classes[] = 'first';
+			}
+		}
 
-			// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
+		if ( empty( $classes ) ) {
+			return $params;
+		}
+
+		$classes = implode( ' ', $classes );
+
+		if ( ! empty( $params['before_widget'] ) ) {
+			// Add the classes.
+			// @todo What if the before_widget tag doesn't have a `class` attribute?
+			$params['before_widget'] = $this->append_to_attribute( $params['before_widget'], 'class', $classes, true );
 		}
 
 		return $params;
