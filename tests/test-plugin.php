@@ -52,6 +52,95 @@ class PluginTest extends WP_UnitTestCase {
 		}
 	}
 
+	// Check widget_update() method
+	function test_widget_update() {
+		$gwcc = genesis_widget_column_classes();
+
+		$tests = array(
+			// Column classes and a first column.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes' => 'test',
+				    'column-classes-first' => '1',
+				),
+				'result' => array(
+					'column-classes' => 'test',
+					'column-classes-first' => true,
+				),
+			),
+			// Not a first column.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes' => 'test',
+					'column-classes-first' => '',
+				),
+				'result' => array(
+					'column-classes' => 'test',
+				),
+			),
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes-first' => false,
+				),
+				'result' => array(),
+			),
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes-first' => '',
+				),
+				'result' => array(),
+			),
+			// First column only.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes' => '',
+					'column-classes-first' => 'anything since it checks for ! empty',
+				),
+				'result' => array(
+					'column-classes-first' => true,
+				),
+			),
+			// Empty data.
+			array(
+				'start'  => array(),
+				'data'   => array(
+					'column-classes' => '',
+					'column-classes-first' => array(),
+				),
+				'result' => array(),
+			),
+			// Remove empty data.
+			array(
+				'start'  => array(
+					'column-classes' => 'test',
+					'column-classes-first' => true,
+				),
+				'data'   => array(),
+				'result' => array(),
+			),
+			array(
+				'start'  => array(
+					'column-classes' => 'test',
+					'column-classes-first' => true,
+				),
+				'data'   => array(
+					'column-classes' => '',
+				),
+				'result' => array(),
+			),
+		);
+
+		// Run tests
+		foreach ( $tests as $test ) {
+			$this->assertEquals( $test['result'], $gwcc->widget_update( $test['start'], $test['data'] ) );
+		}
+	}
+
 	// Check column classes filter.
 	function test_column_classes() {
 		$gwcc = genesis_widget_column_classes();
