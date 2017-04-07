@@ -38,6 +38,16 @@ class PluginTest extends WP_UnitTestCase {
 				'data'   => 'one one two three',
 				'result' => '<div class="test one two three">',
 			),
+			array(
+				'start'  => "<div class='test'>",
+				'data'   => 'one two three',
+				'result' => "<div class='test one two three'>",
+			),
+			array(
+				'start'  => "<div class='test one two'>",
+				'data'   => 'one one two three',
+				'result' => "<div class='test one two three'>",
+			),
 		);
 
 		// Unique result tests.
