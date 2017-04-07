@@ -326,20 +326,16 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since   1.2.2
 	 * @param   array  $widget_instance  The widget instance.
 	 * @param   array  $params           The widget (sidebar) params.
-	 * @param   array  $classes          (optional) The classes.
+	 * @param   array  $classes          (optional) Extra classes.
 	 * @return  array
 	 */
 	public function add_widget_classes( $widget_instance, $params, $classes = array() ) {
 
-		if ( empty( $classes ) ) {
-
-			$classes = array();
-			if ( ! empty( $widget_instance['column-classes'] ) ) {
-				$classes[] = $widget_instance['column-classes'];
-			}
-			if ( ! empty( $widget_instance['column-classes-first'] ) ) {
-				$classes[] = 'first';
-			}
+		if ( ! empty( $widget_instance['column-classes'] ) ) {
+			$classes[] = $widget_instance['column-classes'];
+		}
+		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
+			$classes[] = 'first';
 		}
 
 		if ( empty( $classes ) ) {
