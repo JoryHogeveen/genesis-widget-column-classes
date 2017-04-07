@@ -144,14 +144,6 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
 
-		/**
-		 * Change the default column classes.
-		 *
-		 * @since  1.1.4
-		 * @param  array  $column_classes  The column classes.
-		 */
-		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
-
 		if ( isset( $this->curUser->ID ) ) {
 			add_action( 'admin_notices', array( $this, 'genesis_notice' ) );
 			add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'ignore_genesis_notice' ) );
@@ -424,6 +416,32 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Get the available column classes.
+	 *
+	 * @since   1.2.2
+	 * @return  array
+	 */
+	public function get_column_classes() {
+		static $done = false;
+
+		if ( $done ) {
+			return $this->column_classes;
+		}
+
+		/**
+		 * Change the default column classes.
+		 *
+		 * @since  1.1.4
+		 * @param  array  $column_classes  The column classes.
+		 */
+		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
+
+		$done = true;
+
+		return $this->column_classes;
 	}
 
 	/**
