@@ -34,6 +34,7 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 == Screenshots ==
 
 1. Widget admin view
+2. Frontend example ( `one-third + first` | `one-third` | `one-third` )
 
 == Changelog ==
 
