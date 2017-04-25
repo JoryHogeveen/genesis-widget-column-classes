@@ -21,7 +21,10 @@ I've built this plugin for the Genesis Framework, though it will work with any t
 #### `genesis_widget_column_classes`
 Allows you to change the available column classes
 
-**Parameters:** `array` (default column classes)
+**Parameters:** `array` Default column classes.
+**Return:** `array` Array of column classes.
+
+You can use these filters inside your theme functions.php file or in a plugin.
 
 ## Installation
 

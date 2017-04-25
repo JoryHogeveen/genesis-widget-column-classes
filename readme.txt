@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLM
 Tags: genesis, bootstrap, column, grid, widget, dynamik
 Requires at least: 3.1
 Tested up to: 4.8
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 
 Adds Genesis column classes to widgets.
 
@@ -17,7 +17,10 @@ I've built this plugin for the Genesis Framework, though it will work with any t
 = Filter: `genesis_widget_column_classes` =
 Allows you to change the available column classes
 
-*	**Parameters:** `array` (default column classes)
+**Parameters:** `array` Default column classes.  
+**Return:** `array` Array of column classes.  
+
+You can use these filters inside your theme functions.php file or in a plugin.
 
 == Installation ==
 
@@ -33,6 +36,13 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 1. Widget admin view
 
 == Changelog ==
+
+= 1.2.2 =
+
+*	Enhancement: Helper method to get the available column classes.
+*	Enhancement: Fix CodeClimate coding standards issues.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/5)
 
 = 1.2.1 =
 
