@@ -108,6 +108,14 @@ final class WCC_Genesis_Widget_Column_Classes
 	private $curUser = null;
 
 	/**
+	 * Capability required to use this plugin.
+	 *
+	 * @since  1.2.2
+	 * @var    string
+	 */
+	private $cap = 'edit_theme_options';
+
+	/**
 	 * Init function to register plugin hook
 	 *
 	 * @since   1.1
@@ -146,6 +154,16 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  void
 	 */
 	public function init() {
+
+		/**
+		 * Change the capability required to use this plugin.
+		 * Default: `edit_theme_options`.
+		 *
+		 * @since  1.2.2
+		 * @param  string  $cap  The capability.
+		 * @return string
+		 */
+		$this->cap = apply_filters( 'genesis_widget_column_classes_capability', $this->cap );
 
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
@@ -212,12 +230,21 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function widget_form_extend( $instance, $widget ) {
 
-		$instance = wp_parse_args( (array) $instance,
+		$instance = wp_parse_args(
+			(array) $instance,
 			array(
 				'column-classes' => '',
 				'column-classes-first' => '',
 			)
 		);
+
+		if ( ! current_user_can( $this->cap ) ) {
+			?>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ) ?>" value="<?php echo $instance['column-classes'] ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ) ?>" value="<?php echo $instance['column-classes-first'] ?>"/>
+			<?php
+			return $instance;
+		}
 
 		$row = '<p style="border: 1px solid #eee; padding: 5px; background: #f5f5f5;">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ':</label> ';
