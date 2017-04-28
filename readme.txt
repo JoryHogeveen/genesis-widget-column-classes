@@ -34,7 +34,7 @@ You can use these filters inside your theme functions.php file or in a plugin.
 
 Installation of this plugin works like any other plugin out there. Either:
 
-1. Upload the zip file to the '/wp-content/plugins/' directory
+1. Upload and unpack the zip file to the '/wp-content/plugins/' directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
 Or search for "Genesis Widget Column Classes" via your plugins menu.
