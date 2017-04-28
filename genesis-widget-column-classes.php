@@ -1,7 +1,7 @@
 <?php
 /**
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @author  Jory Hogeveen
  * @since   0.1
  * @version 1.2.2
  * @licence GPL-2.0+
@@ -20,7 +20,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * Copyright 2015-2017 Jory Hogeveen
+ * @copyright 2015-2017 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
