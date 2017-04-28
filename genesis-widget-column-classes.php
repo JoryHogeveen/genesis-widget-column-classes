@@ -1,19 +1,26 @@
 <?php
-/*
+/**
  * @package Genesis_Widget_Column_Classes
  * @author  Jory Hogeveen
+ * @since   0.1
+ * @version 1.2.2
+ * @licence GPL-2.0+
+ * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * Plugin Name: Genesis Widget Column Classes
- * Description: Add Genesis (old Bootstrap) column classes to widgets
- * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:     1.2.2
- * Author:      Jory Hogeveen
- * Author URI:  http://www.keraweb.nl
- * Text Domain: genesis-widget-column-classes
- * Domain Path: /languages/
- * License:     GPLv2
+ * @wordpress-plugin
+ * Plugin Name:       Genesis Widget Column Classes
+ * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
+ * Description:       Add Genesis (old Bootstrap) column classes to widgets
+ * Version:           1.2.2
+ * Author:            Jory Hogeveen
+ * Author URI:        http://www.keraweb.nl
+ * Text Domain:       genesis-widget-column-classes
+ * Domain Path:       /languages/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI: https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * Copyright 2015-2016 Jory Hogeveen
+ * Copyright 2015-2017 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +36,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- *
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
