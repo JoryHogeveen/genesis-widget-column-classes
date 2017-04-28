@@ -28,9 +28,9 @@ Allows you to change the available column classes
 Change the capability required to modify column classes.  
 Since  1.2.2  
 
-*	**Default:** `edit_theme_options`
-*	**Parameters:** `string` The default capability.
-*	**Return:** `string` The new capability.
+**Default:** `edit_theme_options`  
+**Parameters:** `string` The default capability.  
+**Return:** `string` The new capability.  
 
 You can use these filters inside your theme functions.php file or in a plugin.
 
