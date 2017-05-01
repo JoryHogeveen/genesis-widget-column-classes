@@ -1,21 +1,26 @@
 <?php
-/*
+/**
+ * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @author  Jory Hogeveen
+ * @since   0.1
+ * @version 1.2.2
+ * @licence GPL-2.0+
+ * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * Plugin Name: Genesis Widget Column Classes
- * Description: Add Genesis (old Bootstrap) column classes to widgets
- * Plugin URI:  https://wordpress.org/plugins/genesis-widget-column-classes/
- * Version:     1.2.1
- * Author:      Jory Hogeveen
- * Author URI:  http://www.keraweb.nl
- * Text Domain: genesis-widget-column-classes
- * Domain Path: /languages/
- * License:     GPLv2
-*/
-
-/*
- * Copyright 2015-2016 Jory Hogeveen
+ * @wordpress-plugin
+ * Plugin Name:       Genesis Widget Column Classes
+ * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
+ * Description:       Add Genesis (old Bootstrap) column classes to widgets
+ * Version:           1.2.2
+ * Author:            Jory Hogeveen
+ * Author URI:        http://www.keraweb.nl
+ * Text Domain:       genesis-widget-column-classes
+ * Domain Path:       /languages/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+ * GitHub Plugin URI: https://github.com/JoryHogeveen/genesis-widget-column-classes
+ *
+ * @copyright 2015-2017 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,10 +36,11 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- *
  */
 
-! defined( 'ABSPATH' ) and die( 'You shall not pass!' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
 
@@ -44,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1
- * @version 1.2.1
+ * @version 1.2.2
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -63,7 +69,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1
 	 * @var    string
 	 */
-	private $version = '1.2';
+	private $version = '1.2.2';
 
 	/**
 	 * User ignore nag key.
@@ -80,17 +86,17 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @var    array
 	 */
 	private $column_classes = array(
-		'one-half',
-		'one-third',
-		'one-fourth',
-		'one-sixth',
-		'two-thirds',
-		'two-fourths',
-		'two-sixths',
-		'three-fourths',
-		'three-sixths',
-		'four-sixths',
-		'five-sixths',
+		'one-half'      => 'one-half',
+		'one-third'     => 'one-third',
+		'one-fourth'    => 'one-fourth',
+		'one-sixth'     => 'one-sixth',
+		'two-thirds'    => 'two-thirds',
+		'two-fourths'   => 'two-fourths',
+		'two-sixths'    => 'two-sixths',
+		'three-fourths' => 'three-fourths',
+		'three-sixths'  => 'three-sixths',
+		'four-sixths'   => 'four-sixths',
+		'five-sixths'   => 'five-sixths',
 	);
 
 	/**
@@ -100,6 +106,14 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @var    WP_User
 	 */
 	private $curUser = null;
+
+	/**
+	 * Capability required to use this plugin.
+	 *
+	 * @since  1.2.2
+	 * @var    string
+	 */
+	private $cap = 'edit_theme_options';
 
 	/**
 	 * Init function to register plugin hook
@@ -141,16 +155,18 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function init() {
 
+		/**
+		 * Change the capability required to use this plugin.
+		 * Default: `edit_theme_options`.
+		 *
+		 * @since  1.2.2
+		 * @param  string  $cap  The capability.
+		 * @return string
+		 */
+		$this->cap = apply_filters( 'genesis_widget_column_classes_capability', $this->cap );
+
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
-
-		/**
-		 * Change the default column classes.
-		 *
-		 * @since  1.1.4
-		 * @param  array  $column_classes  The column classes.
-		 */
-		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
 
 		if ( isset( $this->curUser->ID ) ) {
 			add_action( 'admin_notices', array( $this, 'genesis_notice' ) );
@@ -163,8 +179,8 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
 		add_filter( 'widget_form_callback', array( $this, 'widget_form_extend' ), 10, 2 );
-		add_filter( 'widget_update_callback', array( $this, 'widget_update' ), 10, 2 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'sidebar_params' ), 99999 ); // Make sure to be the last one
+		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 2 );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one
 	}
 
 	/**
@@ -180,6 +196,7 @@ final class WCC_Genesis_Widget_Column_Classes
 			if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 				$class = 'notice notice-warning is-dismissible';
 				$message = '<strong>' . __( 'Genesis Widget Column Classes', 'genesis-widget-column-classes' ) . ':</strong> ';
+				// Translators: %s stands for "Genesis Framework".
 				$message .= sprintf( __( 'The %s is recommended to ensure that Genesis Widget Column Classes will work properly', 'genesis-widget-column-classes' ), '<a href="http://my.studiopress.com/themes/genesis/" target="_blank">Genesis Framework</a>' );
 				$ignore = '<a id="' . $this->noticeKey . '" href="?' . $this->noticeKey . '=1" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'genesis-widget-column-classes' ) . '</span></a>';
 				$script = '<script>(function($) { $(document).on("click", "#' . $this->noticeKey . '", function(e){e.preventDefault();$.post(ajaxurl, {\'action\': \'' . $this->noticeKey . '\'});}) })( jQuery );</script>';
@@ -213,12 +230,21 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function widget_form_extend( $instance, $widget ) {
 
-		$instance = wp_parse_args( (array) $instance,
+		$instance = wp_parse_args(
+			(array) $instance,
 			array(
 				'column-classes' => '',
 				'column-classes-first' => '',
 			)
 		);
+
+		if ( ! current_user_can( $this->cap ) ) {
+			?>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ) ?>" value="<?php echo $instance['column-classes'] ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ) ?>" value="<?php echo $instance['column-classes-first'] ?>"/>
+			<?php
+			return $instance;
+		}
 
 		$row = '<p style="border: 1px solid #eee; padding: 5px; background: #f5f5f5;">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ':</label> ';
@@ -226,7 +252,7 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		$row .= '<option value="">- ' . __( 'none', 'genesis-widget-column-classes' ) . ' -</option>';
 
-		foreach ( $this->column_classes as $class_name ) {
+		foreach ( $this->get_column_classes() as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
 				$row .= '<option value="' . $class_name . '" ' . selected( $instance['column-classes'], $class_name, false ) . '>' . $class_label . '</option>';
@@ -246,20 +272,21 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the new fields to the update instance.
 	 *
 	 * @since   0.1
+	 * @since   0.2.2   Do not save empty data.
 	 * @access  public
 	 * @param   array   $instance
 	 * @param   array   $new_instance
 	 * @return  array   $instance
 	 */
-	public function widget_update( $instance, $new_instance ) {
-		$instance['column-classes'] = '';
-		$instance['column-classes-first'] = '';
+	public function widget_update_callback( $instance, $new_instance ) {
+		unset( $instance['column-classes'] );
+		unset( $instance['column-classes-first'] );
 
-		if ( isset( $new_instance['column-classes'] ) ) {
+		if ( ! empty( $new_instance['column-classes'] ) ) {
 			$instance['column-classes'] = esc_attr( $new_instance['column-classes'] );
 		}
-		if ( isset( $new_instance['column-classes-first'] ) ) {
-			$instance['column-classes-first'] = '1';
+		if ( ! empty( $new_instance['column-classes-first'] ) ) {
+			$instance['column-classes-first'] = true;
 		}
 
 		return $instance;
@@ -268,15 +295,18 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add classes to the widget.
 	 *
+	 * // Disable variable check because of global $wp_registered_widgets.
+	 * @SuppressWarnings(PHPMD.LongVariables)
+	 *
 	 * @since   0.1
 	 * @access  public
 	 * @param   array   $params
 	 * @return  array   $params
 	 */
-	public function sidebar_params( $params ) {
+	public function dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
-		if ( empty( $params[0] ) ) {
+		if ( empty( $params[0]['widget_id'] ) ) {
 			return $params;
 		}
 		$widget_id  = $params[0]['widget_id'];
@@ -317,23 +347,40 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $params;
 		}
 
-		$classes_extra = '';
-		if ( ! empty( $widget_opt[ $widget_num ]['column-classes'] ) ) {
-			$classes_extra .= $widget_opt[ $widget_num ]['column-classes'] . ' ';
+		$params[0] = $this->add_widget_classes( $widget_opt[ $widget_num ], $params[0] );
+		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
+
+		return $params;
+	}
+
+	/**
+	 * Add the classes to the widget parameters.
+	 *
+	 * @since   1.2.2
+	 * @param   array  $widget_instance  The widget instance.
+	 * @param   array  $params           The widget (sidebar) params.
+	 * @param   array  $classes          (optional) Extra classes.
+	 * @return  array
+	 */
+	public function add_widget_classes( $widget_instance, $params, $classes = array() ) {
+
+		if ( ! empty( $widget_instance['column-classes'] ) ) {
+			$classes[] = $widget_instance['column-classes'];
 		}
-		if ( isset( $widget_opt[ $widget_num ]['column-classes-first'] ) && 1 === (int) $widget_opt[ $widget_num ]['column-classes-first'] ) {
-			$classes_extra .= 'first ';
+		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
+			$classes[] = 'first';
 		}
 
-		if ( ! empty( $classes_extra ) ) {
+		if ( empty( $classes ) ) {
+			return $params;
+		}
 
-			if ( ! empty( $params[0]['before_widget'] ) ) {
-				// Add the classes.
-				// @todo What if the before_widget tag doesn't have a `class` attribute?
-				$params[0]['before_widget'] = $this->append_to_attribute( $params[0]['before_widget'], 'class', $classes_extra, true );
-			}
+		$classes = implode( ' ', $classes );
 
-			// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
+		if ( ! empty( $params['before_widget'] ) ) {
+			// Add the classes.
+			// @todo What if the before_widget tag doesn't have a `class` attribute?
+			$params['before_widget'] = $this->append_to_attribute( $params['before_widget'], 'class', $classes, true );
 		}
 
 		return $params;
@@ -354,12 +401,16 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function append_to_attribute( $str, $attr, $content_extra, $unique = false ) {
 
 		// Check if attribute has single or double quotes.
+		// @codingStandardsIgnoreLine
 		if ( $start = stripos( $str, $attr . '="' ) ) {
 			// Double.
 			$quote = '"';
+
+		// @codingStandardsIgnoreLine
 		} elseif ( $start = stripos( $str, $attr . "='" ) ) {
 			// Single.
 			$quote = "'";
+
 		} else {
 			// Not found
 			return $str;
@@ -415,6 +466,32 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function load_textdomain() {
 		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Get the available column classes.
+	 *
+	 * @since   1.2.2
+	 * @return  array
+	 */
+	public function get_column_classes() {
+		static $done = false;
+
+		if ( $done ) {
+			return $this->column_classes;
+		}
+
+		/**
+		 * Change the default column classes.
+		 *
+		 * @since  1.1.4
+		 * @param  array  $column_classes  The column classes.
+		 */
+		$this->column_classes = apply_filters( 'genesis_widget_column_classes', $this->column_classes );
+
+		$done = true;
+
+		return $this->column_classes;
 	}
 
 	/**
@@ -492,4 +569,4 @@ function genesis_widget_column_classes() {
 }
 genesis_widget_column_classes();
 
-} // end if class_exists
+} // End if().
