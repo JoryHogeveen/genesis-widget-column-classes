@@ -425,9 +425,9 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		if ( $unique ) {
 
-			// Set start pointer to after ".
+			// Set start pointer to after the quote.
 			$start += strlen( $attr );
-			// Find first " after the start pointer.
+			// Find first quote after the start pointer.
 			$end = strpos( $str, $quote, $start );
 			// Get the current content.
 			$content = explode( ' ', substr( $str, $start, $end - $start ) );
