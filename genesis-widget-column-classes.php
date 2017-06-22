@@ -439,8 +439,8 @@ final class WCC_Genesis_Widget_Column_Classes
 					$content[] = $class;
 				}
 			}
-			// Remove duplicates.
-			$content = array_unique( $content );
+			// Remove duplicates and empty values.
+			$content = array_filter( array_unique( $content ) );
 			// Convert to space separated string.
 			$content = implode( ' ', $content );
 			// Get HTML before content.
@@ -452,8 +452,13 @@ final class WCC_Genesis_Widget_Column_Classes
 			$str = $before_content . $content . $after_content;
 
 		} else {
-			$str = str_replace( $attr, $attr . $content_extra . ' ' , $str );
-		}
+			$str = preg_replace(
+				'/' . preg_quote( $attr, '/' ) . '/',
+				$attr . $content_extra . ' ' ,
+				$str,
+				1
+			);
+		} // End if().
 
 		// Return full HTML string.
 		return $str;
