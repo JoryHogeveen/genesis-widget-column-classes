@@ -21,6 +21,7 @@ When contributing please ensure you follow the guidelines below so that we can k
   * Ensure you stick to the [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards)
   * This repository contains all files needed to properly configure your IDE with the correct coding standards and code style configuration.
     * [PHP MD](https://github.com/JoryHogeveen/genesis-widget-column-classes/blob/master/tests/phpmd.xml)
+    * [PHP CS](https://github.com/JoryHogeveen/genesis-widget-column-classes/blob/master/tests/phpcs.xml)
 * If the changes are a new feature make sure you add PHP Unit tests or at least contribute in creating tests.
 * Push the changes to the branch you created and submit a pull request for the `dev` branch.
 
