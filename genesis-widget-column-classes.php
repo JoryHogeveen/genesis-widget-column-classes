@@ -350,7 +350,8 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $params;
 		}
 
-		$params[0] = $this->add_widget_classes( $widget_opt[ $widget_num ], $params[0] );
+		$classes = $this->get_widget_classes( $widget_opt[ $widget_num ], array() );
+		$params[0] = $this->add_widget_classes( $params[0], $classes );
 		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 
 		return $params;
@@ -360,19 +361,12 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the classes to the widget parameters.
 	 *
 	 * @since   1.2.2
-	 * @param   array  $widget_instance  The widget instance.
+	 * @since   1.2.3  Refactor: Remove first $widget_instance parameter.
 	 * @param   array  $params           The widget (sidebar) params.
-	 * @param   array  $classes          (optional) Extra classes.
+	 * @param   array  $classes          (optional) Append to existing classes.
 	 * @return  array
 	 */
-	public function add_widget_classes( $widget_instance, $params, $classes = array() ) {
-
-		if ( ! empty( $widget_instance['column-classes'] ) ) {
-			$classes[] = $widget_instance['column-classes'];
-		}
-		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
-			$classes[] = 'first';
-		}
+	public function add_widget_classes( $params, $classes = array() ) {
 
 		if ( empty( $classes ) ) {
 			return $params;
@@ -476,14 +470,23 @@ final class WCC_Genesis_Widget_Column_Classes
 	}
 
 	/**
-	 * Load plugin textdomain.
+	 * Get the classes from a widget instance.
 	 *
-	 * @since   1.1.3
-	 * @access  public
-	 * @return  void
+	 * @since   1.2.3
+	 * @param   array  $widget_instance  The widget instance.
+	 * @param   array  $classes          (optional) Extra classes.
+	 * @return  array
 	 */
-	public function action_load_textdomain() {
-		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	public function get_widget_classes( $widget_instance, $classes = array() ) {
+
+		if ( ! empty( $widget_instance['column-classes'] ) ) {
+			$classes[] = $widget_instance['column-classes'];
+		}
+		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
+			$classes[] = 'first';
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -510,6 +513,17 @@ final class WCC_Genesis_Widget_Column_Classes
 		$done = true;
 
 		return $this->column_classes;
+	}
+
+	/**
+	 * Load plugin textdomain.
+	 *
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
+	 */
+	public function action_load_textdomain() {
+		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
