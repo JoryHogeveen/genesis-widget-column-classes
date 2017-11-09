@@ -168,13 +168,14 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
 
-		if ( isset( $this->curUser->ID ) ) {
-			add_action( 'admin_notices', array( $this, 'action_genesis_notice' ) );
-			add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'action_ignore_genesis_notice' ) );
-		}
-
-		if ( is_admin() ) {
+		if ( is_admin() && current_user_can( $this->cap ) ) {
 			add_action( 'init', array( $this, 'action_load_textdomain' ) );
+
+			if ( isset( $this->curUser->ID ) ) {
+				add_action( 'admin_notices', array( $this, 'action_genesis_notice' ) );
+				add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'action_ignore_genesis_notice' ) );
+			}
+
 			// Dev.
 			add_filter( 'screen_settings', array( $this, 'filter_screen_settings' ), 10, 2 );
 		}
