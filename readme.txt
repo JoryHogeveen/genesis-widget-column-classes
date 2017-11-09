@@ -52,7 +52,7 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 *	**Enhancement:** Better attribute replacement.
 *	**Enhancement:** Add wrapper div if the widget parameters are incorrect.
 *	**Enhancement:** Do not load textdomain if the user does not have access.
-*	**Compatibility:** Tested with WordPress 4.9
+*	**Compatibility:** Tested with WordPress 4.9.
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/6)
 
@@ -66,44 +66,44 @@ Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-col
 
 = 1.2.1 =
 
-*	**Enhancement:** Fixed code inspections from CodeClimate
-*	**Compatibility:** Tested with WordPress 4.8
+*	**Enhancement:** Fixed code inspections from CodeClimate.
+*	**Compatibility:** Tested with WordPress 4.8.
 
 = 1.2 =
 
-*	**Compatibility:** Compatibility with plugins that use the `widget_display_callback` hook
-*	**Enhancement:** Remove duplicate classes if found
-*	**Enhancement:** Update textdomain hook
+*	**Compatibility:** Compatibility with plugins that use the `widget_display_callback` hook.
+*	**Enhancement:** Remove duplicate classes if found.
+*	**Enhancement:** Update textdomain hook.
 
 = 1.1.4 =
 
-*	**Enhancement:** Usage of the WP_Widget object for generating input names and ID's
-*	**Feature:** Add filter `genesis_widget_column_classes` to add/modify available column classes
-*	**Compatibility:** Tested with WordPress 4.6
+*	**Enhancement:** Usage of the WP_Widget object for generating input names and ID's.
+*	**Feature:** Add filter `genesis_widget_column_classes` to add/modify available column classes.
+*	**Compatibility:** Tested with WordPress 4.6.
 
 = 1.1.3 =
 
-*	**Enhancement:** Usage of a single instance of the class
-*	**Compatibility:** Add support for translate.wordpress.org
-*	**Enhancement:** Minor code standard fixes
+*	**Enhancement:** Usage of a single instance of the class.
+*	**Compatibility:** Add support for translate.wordpress.org.
+*	**Enhancement:** Minor code standard fixes.
 
 = 1.1.2 =
 
-*	**Enhancement:** Allow "first" class when no width is selected
+*	**Enhancement:** Allow "first" class when no width is selected.
 
 = 1.1.1 =
 
-*	**Fix:** constructor for PHP7
+*	**Fix:** constructor for PHP7.
 
 = 1.1 =
 
-*	**Enhancement:** Make plugin object oriented (OOP)
-*	**Enhancement:** Make "no genesis theme" nag dismissible
-*	**Enhancement:** Code, format and security improvements
+*	**Enhancement:** Make plugin object oriented (OOP).
+*	**Enhancement:** Make "no genesis theme" nag dismissible.
+*	**Enhancement:** Code, format and security improvements.
 
 = 1.0.1 =
 
-*	**Enhancement:** Some small improvements
+*	**Enhancement:** Some small improvements.
 
 = 1.0 =
 
