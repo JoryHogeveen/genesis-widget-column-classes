@@ -383,6 +383,16 @@ final class WCC_Genesis_Widget_Column_Classes
 			// Add the classes.
 			// @todo What if the before_widget tag doesn't have a `class` attribute?
 			$params['before_widget'] = $this->append_to_attribute( $params['before_widget'], 'class', $classes, true );
+
+		} else {
+			// Add our own div that will add the classes.
+			$params['before_widget'] = '<div class="' . $classes . '">';
+
+			if ( ! empty( $params['after_widget'] ) ) {
+				$params['after_widget'] .= '</div>';
+			} else {
+				$params['after_widget'] = '</div>';
+			}
 		}
 
 		return $params;
