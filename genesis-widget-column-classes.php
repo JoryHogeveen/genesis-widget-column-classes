@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1
- * @version 1.2.3-dev
+ * @version 1.2.3-rc1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
