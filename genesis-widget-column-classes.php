@@ -242,8 +242,8 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		if ( ! current_user_can( $this->cap ) ) {
 			?>
-			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ) ?>" value="<?php echo $instance['column-classes'] ?>"/>
-			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ) ?>" value="<?php echo $instance['column-classes-first'] ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ); ?>" value="<?php echo $instance['column-classes']; ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ); ?>" value="<?php echo $instance['column-classes-first']; ?>"/>
 			<?php
 			return $instance;
 		}
@@ -333,7 +333,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		/**
-		 * Compat with plugins that filter the display callback
+		 * Compat with plugins that filter the display callback.
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
 		 *
