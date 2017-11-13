@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1
- * @version 1.2.2
+ * @version 1.2.3
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.2
+ * Version:           1.2.3
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1
- * @version 1.2.2
+ * @version 1.2.3
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -69,7 +69,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1
 	 * @var    string
 	 */
-	private $version = '1.2.2';
+	private $version = '1.2.3';
 
 	/**
 	 * User ignore nag key.
@@ -168,19 +168,19 @@ final class WCC_Genesis_Widget_Column_Classes
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
 
-		if ( isset( $this->curUser->ID ) ) {
-			add_action( 'admin_notices', array( $this, 'genesis_notice' ) );
-			add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'ignore_genesis_notice' ) );
+		if ( is_admin() && current_user_can( $this->cap ) ) {
+			add_action( 'init', array( $this, 'action_load_textdomain' ) );
+
+			if ( isset( $this->curUser->ID ) ) {
+				add_action( 'admin_notices', array( $this, 'action_genesis_notice' ) );
+				add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'action_ignore_genesis_notice' ) );
+			}
 		}
 
-		if ( is_admin() ) {
-			add_action( 'init', array( $this, 'load_textdomain' ) );
-		}
-
-		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
-		add_filter( 'widget_form_callback', array( $this, 'widget_form_extend' ), 10, 2 );
-		add_filter( 'widget_update_callback', array( $this, 'widget_update_callback' ), 10, 2 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one
+		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields.
+		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 1, 2 );
+		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
+		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one.
 	}
 
 	/**
@@ -191,7 +191,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @access  public
 	 * @return  void
 	 */
-	public function genesis_notice() {
+	public function action_genesis_notice() {
 		if ( 'genesis' !== get_template() ) {
 			if ( get_user_meta( $this->curUser->ID, $this->noticeKey, true ) !== $this->version ) {
 				$class = 'notice notice-warning is-dismissible';
@@ -214,7 +214,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since   1.1
 	 * @access  public
 	 */
-	public function ignore_genesis_notice() {
+	public function action_ignore_genesis_notice() {
 		update_user_meta( $this->curUser->ID, $this->noticeKey, $this->version );
 		wp_die();
 	}
@@ -228,7 +228,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @param   object  $widget
 	 * @return  array   $instance
 	 */
-	public function widget_form_extend( $instance, $widget ) {
+	public function filter_widget_form_extend( $instance, $widget ) {
 
 		$instance = wp_parse_args(
 			(array) $instance,
@@ -240,8 +240,8 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		if ( ! current_user_can( $this->cap ) ) {
 			?>
-			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ) ?>" value="<?php echo $instance['column-classes'] ?>"/>
-			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ) ?>" value="<?php echo $instance['column-classes-first'] ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes' ); ?>" value="<?php echo $instance['column-classes']; ?>"/>
+			<input type="hidden" name="<?php echo $widget->get_field_name( 'column-classes-first' ); ?>" value="<?php echo $instance['column-classes-first']; ?>"/>
 			<?php
 			return $instance;
 		}
@@ -278,7 +278,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @param   array   $new_instance
 	 * @return  array   $instance
 	 */
-	public function widget_update_callback( $instance, $new_instance ) {
+	public function filter_widget_update_callback( $instance, $new_instance ) {
 		unset( $instance['column-classes'] );
 		unset( $instance['column-classes-first'] );
 
@@ -303,7 +303,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @param   array   $params
 	 * @return  array   $params
 	 */
-	public function dynamic_sidebar_params( $params ) {
+	public function filter_dynamic_sidebar_params( $params ) {
 		global $wp_registered_widgets;
 
 		if ( empty( $params[0]['widget_id'] ) ) {
@@ -331,7 +331,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		/**
-		 * Compat with plugins that filter the display callback
+		 * Compat with plugins that filter the display callback.
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
 		 *
@@ -347,7 +347,8 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $params;
 		}
 
-		$params[0] = $this->add_widget_classes( $widget_opt[ $widget_num ], $params[0] );
+		$classes = $this->get_widget_classes( $widget_opt[ $widget_num ], array() );
+		$params[0] = $this->add_widget_classes( $params[0], $classes );
 		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 
 		return $params;
@@ -357,19 +358,12 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the classes to the widget parameters.
 	 *
 	 * @since   1.2.2
-	 * @param   array  $widget_instance  The widget instance.
+	 * @since   1.2.3  Refactor: Remove first $widget_instance parameter.
 	 * @param   array  $params           The widget (sidebar) params.
-	 * @param   array  $classes          (optional) Extra classes.
+	 * @param   array  $classes          (optional) Append to existing classes.
 	 * @return  array
 	 */
-	public function add_widget_classes( $widget_instance, $params, $classes = array() ) {
-
-		if ( ! empty( $widget_instance['column-classes'] ) ) {
-			$classes[] = $widget_instance['column-classes'];
-		}
-		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
-			$classes[] = 'first';
-		}
+	public function add_widget_classes( $params, $classes = array() ) {
 
 		if ( empty( $classes ) ) {
 			return $params;
@@ -381,13 +375,23 @@ final class WCC_Genesis_Widget_Column_Classes
 			// Add the classes.
 			// @todo What if the before_widget tag doesn't have a `class` attribute?
 			$params['before_widget'] = $this->append_to_attribute( $params['before_widget'], 'class', $classes, true );
+
+		} else {
+			// Add our own div that will add the classes.
+			$params['before_widget'] = '<div class="' . $classes . '">';
+
+			if ( ! empty( $params['after_widget'] ) ) {
+				$params['after_widget'] .= '</div>';
+			} else {
+				$params['after_widget'] = '</div>';
+			}
 		}
 
 		return $params;
 	}
 
 	/**
-	 * Find the class attribute and add the classes in a HTML string.
+	 * Find an attribute and add the data as a HTML string.
 	 *
 	 * @since 1.2
 	 *
@@ -423,9 +427,9 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		if ( $unique ) {
 
-			// Set start pointer to after ".
+			// Set start pointer to after the quote.
 			$start += strlen( $attr );
-			// Find first " after the start pointer.
+			// Find first quote after the start pointer.
 			$end = strpos( $str, $quote, $start );
 			// Get the current content.
 			$content = explode( ' ', substr( $str, $start, $end - $start ) );
@@ -437,8 +441,8 @@ final class WCC_Genesis_Widget_Column_Classes
 					$content[] = $class;
 				}
 			}
-			// Remove duplicates.
-			$content = array_unique( $content );
+			// Remove duplicates and empty values.
+			$content = array_filter( array_unique( $content ) );
 			// Convert to space separated string.
 			$content = implode( ' ', $content );
 			// Get HTML before content.
@@ -450,22 +454,36 @@ final class WCC_Genesis_Widget_Column_Classes
 			$str = $before_content . $content . $after_content;
 
 		} else {
-			$str = str_replace( $attr, $attr . $content_extra . ' ' , $str );
-		}
+			$str = preg_replace(
+				'/' . preg_quote( $attr, '/' ) . '/',
+				$attr . $content_extra . ' ' ,
+				$str,
+				1
+			);
+		} // End if().
 
 		// Return full HTML string.
 		return $str;
 	}
 
 	/**
-	 * Load plugin textdomain.
+	 * Get the classes from a widget instance.
 	 *
-	 * @since   1.1.3
-	 * @access  public
-	 * @return  void
+	 * @since   1.2.3
+	 * @param   array  $widget_instance  The widget instance.
+	 * @param   array  $classes          (optional) Extra classes.
+	 * @return  array
 	 */
-	public function load_textdomain() {
-		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	public function get_widget_classes( $widget_instance, $classes = array() ) {
+
+		if ( ! empty( $widget_instance['column-classes'] ) ) {
+			$classes[] = $widget_instance['column-classes'];
+		}
+		if ( ! empty( $widget_instance['column-classes-first'] ) ) {
+			$classes[] = 'first';
+		}
+
+		return $classes;
 	}
 
 	/**
@@ -492,6 +510,17 @@ final class WCC_Genesis_Widget_Column_Classes
 		$done = true;
 
 		return $this->column_classes;
+	}
+
+	/**
+	 * Load plugin textdomain.
+	 *
+	 * @since   1.1.3
+	 * @access  public
+	 * @return  void
+	 */
+	public function action_load_textdomain() {
+		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
