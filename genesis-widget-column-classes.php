@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.3-rc1
+ * Version:           1.2.3
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -175,15 +175,12 @@ final class WCC_Genesis_Widget_Column_Classes
 				add_action( 'admin_notices', array( $this, 'action_genesis_notice' ) );
 				add_action( 'wp_ajax_' . $this->noticeKey, array( $this, 'action_ignore_genesis_notice' ) );
 			}
-
-			// Dev.
-			add_filter( 'screen_settings', array( $this, 'filter_screen_settings' ), 10, 2 );
 		}
 
-		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields
-		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 10, 2 );
+		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields.
+		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 1, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
-		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one
+		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one.
 	}
 
 	/**
