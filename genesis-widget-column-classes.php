@@ -58,7 +58,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * The single instance of the class.
 	 *
 	 * @since  1.1.3
-	 * @var    WCC_Genesis_Widget_Column_Classes
+	 * @var    \WCC_Genesis_Widget_Column_Classes
 	 */
 	private static $_instance = null;
 
@@ -235,9 +235,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   0.1.0
 	 * @access  public
-	 * @param   array   $instance
-	 * @param   object  $widget
-	 * @return  array   $instance
+	 * @param   array       $instance
+	 * @param   \WP_Widget  $widget
+	 * @return  array       $instance
 	 */
 	public function filter_widget_form_extend( $instance, $widget ) {
 
@@ -348,9 +348,9 @@ final class WCC_Genesis_Widget_Column_Classes
 		 *
 		 * @since  1.2.0
 		 *
-		 * @param  array      $instance  The current widget instance's settings.
-		 * @param  WP_Widget  $this      The current widget instance.
-		 * @param  array      $args      An array of default widget arguments.
+		 * @param  array       $instance  The current widget instance's settings.
+		 * @param  \WP_Widget  $this      The current widget instance.
+		 * @param  array       $args      An array of default widget arguments.
 		 */
 		$widget_opt[ $widget_num ] = apply_filters( 'widget_display_callback', $widget_opt[ $widget_num ], $widget_obj['callback'][0], $params[0] );
 
@@ -693,8 +693,8 @@ final class WCC_Genesis_Widget_Column_Classes
  *
  * Returns the main instance of WCC_Genesis_Widget_Column_Classes to prevent the need to use globals.
  *
- * @since  1.1.3
- * @return WCC_Genesis_Widget_Column_Classes
+ * @since   1.1.3
+ * @return  \WCC_Genesis_Widget_Column_Classes
  */
 function genesis_widget_column_classes() {
 	return WCC_Genesis_Widget_Column_Classes::get_instance();
