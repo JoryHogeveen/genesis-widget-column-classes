@@ -2,8 +2,8 @@
 /**
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @since   0.1
- * @version 1.2.3
+ * @since   0.1.0
+ * @version 1.2.4
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.3
+ * Version:           1.2.4-dev
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -20,7 +20,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * @copyright 2015-2017 Jory Hogeveen
+ * @copyright 2015-2018 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,12 +49,11 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @since   0.1
- * @version 1.2.3
+ * @since   0.1.0
+ * @version 1.2.4
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
-
 	/**
 	 * The single instance of the class.
 	 *
@@ -74,15 +73,15 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Plugin version.
 	 *
-	 * @since  1.1
+	 * @since  1.1.0
 	 * @var    string
 	 */
-	private $version = '1.2.3';
+	private $version = '1.2.4';
 
 	/**
 	 * User ignore nag key.
 	 *
-	 * @since  1.1
+	 * @since  1.1.0
 	 * @var    string
 	 */
 	private $noticeKey = 'wcc_ignore_genesis_notice';
@@ -110,8 +109,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Current user object.
 	 *
-	 * @since  1.1
-	 * @var    WP_User
+	 * @since  1.1.0
+	 * @var    \WP_User
 	 */
 	private $curUser = null;
 
@@ -126,7 +125,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Init function to register plugin hook
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  private
 	 */
 	private function __construct() {
@@ -158,7 +157,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Init function/action and register all used hooks.
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -199,7 +198,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add notice when theme is nog based on the Genesis Framework.
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -223,7 +222,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * Store format: Boolean.
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  public
 	 */
 	public function action_ignore_genesis_notice() {
@@ -234,7 +233,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add options to the widgets.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @param   array   $instance
 	 * @param   object  $widget
@@ -283,7 +282,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add the new fields to the update instance.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @since   0.2.2   Do not save empty data.
 	 * @access  public
 	 * @param   array   $instance
@@ -310,7 +309,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * // Disable variable check because of global $wp_registered_widgets.
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @param   array   $params
 	 * @return  array   $params
@@ -347,11 +346,11 @@ final class WCC_Genesis_Widget_Column_Classes
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
 		 *
-		 * @since 1.2
+		 * @since  1.2.0
 		 *
-		 * @param array     $instance The current widget instance's settings.
-		 * @param WP_Widget $this     The current widget instance.
-		 * @param array     $args     An array of default widget arguments.
+		 * @param  array      $instance  The current widget instance's settings.
+		 * @param  WP_Widget  $this      The current widget instance.
+		 * @param  array      $args      An array of default widget arguments.
 		 */
 		$widget_opt[ $widget_num ] = apply_filters( 'widget_display_callback', $widget_opt[ $widget_num ], $widget_obj['callback'][0], $params[0] );
 
@@ -405,12 +404,12 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Find an attribute and add the data as a HTML string.
 	 *
-	 * @since 1.2
+	 * @since   1.2.0
 	 *
-	 * @param  string  $str            The HTML string.
-	 * @param  string  $attr           The attribute to find.
-	 * @param  string  $content_extra  The content that needs to be appended.
-	 * @param  bool    $unique         Do we need to filter for unique values?
+	 * @param   string  $str            The HTML string.
+	 * @param   string  $attr           The attribute to find.
+	 * @param   string  $content_extra  The content that needs to be appended.
+	 * @param   bool    $unique         Do we need to filter for unique values?
 	 *
 	 * @return string
 	 */
