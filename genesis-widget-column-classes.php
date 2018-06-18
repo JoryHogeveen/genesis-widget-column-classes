@@ -257,7 +257,7 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $instance;
 		}
 
-		$row = '<p style="border: 1px solid #eee; padding: 5px; background: #f5f5f5;">';
+		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ':</label> ';
 		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
 
@@ -270,7 +270,7 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 
-		$row .= '</select>';
+		$row .= '</select> &nbsp;';
 		$row .= ' <label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', 'genesis-widget-column-classes' ) . ':</label>';
 		$row .= ' <input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
