@@ -64,6 +64,14 @@ final class WCC_Genesis_Widget_Column_Classes
 	private static $_instance = null;
 
 	/**
+	 * The plugin basename.
+	 *
+	 * @since  1.2.4
+	 * @var    string
+	 */
+	public static $_basename = '';
+
+	/**
 	 * Plugin version.
 	 *
 	 * @since  1.1
@@ -123,6 +131,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	private function __construct() {
 		self::$_instance = $this;
+		self::$_basename = plugin_basename( __FILE__ );
 
 		// Lets start!
 		add_action( 'init', array( $this, 'init' ) );
