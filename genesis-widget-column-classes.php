@@ -2,8 +2,8 @@
 /**
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @since   0.1
- * @version 1.2.3
+ * @since   0.1.0
+ * @version 1.2.4
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.3
+ * Version:           1.2.4
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -20,7 +20,7 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
- * @copyright 2015-2017 Jory Hogeveen
+ * @copyright 2015-2018 Jory Hogeveen
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,32 +49,39 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  *
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
- * @since   0.1
- * @version 1.2.3
+ * @since   0.1.0
+ * @version 1.2.4
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
-
 	/**
 	 * The single instance of the class.
 	 *
 	 * @since  1.1.3
-	 * @var    WCC_Genesis_Widget_Column_Classes
+	 * @var    \WCC_Genesis_Widget_Column_Classes
 	 */
 	private static $_instance = null;
 
 	/**
-	 * Plugin version.
+	 * The plugin basename.
 	 *
-	 * @since  1.1
+	 * @since  1.2.4
 	 * @var    string
 	 */
-	private $version = '1.2.3';
+	public static $_basename = '';
+
+	/**
+	 * Plugin version.
+	 *
+	 * @since  1.1.0
+	 * @var    string
+	 */
+	private $version = '1.2.4';
 
 	/**
 	 * User ignore nag key.
 	 *
-	 * @since  1.1
+	 * @since  1.1.0
 	 * @var    string
 	 */
 	private $noticeKey = 'wcc_ignore_genesis_notice';
@@ -102,8 +109,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Current user object.
 	 *
-	 * @since  1.1
-	 * @var    WP_User
+	 * @since  1.1.0
+	 * @var    \WP_User
 	 */
 	private $curUser = null;
 
@@ -118,11 +125,12 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Init function to register plugin hook
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  private
 	 */
 	private function __construct() {
 		self::$_instance = $this;
+		self::$_basename = plugin_basename( __FILE__ );
 
 		// Lets start!
 		add_action( 'init', array( $this, 'init' ) );
@@ -149,7 +157,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Init function/action and register all used hooks.
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -177,6 +185,9 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 
+		// Add links to plugins page.
+		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
+
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields.
 		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 1, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
@@ -187,7 +198,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add notice when theme is nog based on the Genesis Framework.
 	 * Checks for version in the notice ignore meta value. If the version is the same (user has clicked ignore), then hide it.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @return  void
 	 */
@@ -211,7 +222,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * Store format: Boolean.
 	 *
-	 * @since   1.1
+	 * @since   1.1.0
 	 * @access  public
 	 */
 	public function action_ignore_genesis_notice() {
@@ -222,11 +233,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add options to the widgets.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
-	 * @param   array   $instance
-	 * @param   object  $widget
-	 * @return  array   $instance
+	 * @param   array       $instance
+	 * @param   \WP_Widget  $widget
+	 * @return  array       $instance
 	 */
 	public function filter_widget_form_extend( $instance, $widget ) {
 
@@ -246,8 +257,8 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $instance;
 		}
 
-		$row = '<p style="border: 1px solid #eee; padding: 5px; background: #f5f5f5;">';
-		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ':</label> ';
+		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
+		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ': &nbsp;</label>';
 		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
 
 		$row .= '<option value="">- ' . __( 'none', 'genesis-widget-column-classes' ) . ' -</option>';
@@ -259,9 +270,9 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 
-		$row .= '</select>';
-		$row .= ' <label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', 'genesis-widget-column-classes' ) . ':</label>';
-		$row .= ' <input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
+		$row .= '</select> &nbsp; ';
+		$row .= '<label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', 'genesis-widget-column-classes' ) . ': &nbsp;</label>';
+		$row .= '<input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
 
 		echo $row;
@@ -271,7 +282,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Add the new fields to the update instance.
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @since   0.2.2   Do not save empty data.
 	 * @access  public
 	 * @param   array   $instance
@@ -298,7 +309,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * // Disable variable check because of global $wp_registered_widgets.
 	 * @SuppressWarnings(PHPMD.LongVariables)
 	 *
-	 * @since   0.1
+	 * @since   0.1.0
 	 * @access  public
 	 * @param   array   $params
 	 * @return  array   $params
@@ -335,11 +346,11 @@ final class WCC_Genesis_Widget_Column_Classes
 		 *
 		 * @see https://developer.wordpress.org/reference/hooks/widget_display_callback/
 		 *
-		 * @since 1.2
+		 * @since  1.2.0
 		 *
-		 * @param array     $instance The current widget instance's settings.
-		 * @param WP_Widget $this     The current widget instance.
-		 * @param array     $args     An array of default widget arguments.
+		 * @param  array       $instance  The current widget instance's settings.
+		 * @param  \WP_Widget  $this      The current widget instance.
+		 * @param  array       $args      An array of default widget arguments.
 		 */
 		$widget_opt[ $widget_num ] = apply_filters( 'widget_display_callback', $widget_opt[ $widget_num ], $widget_obj['callback'][0], $params[0] );
 
@@ -393,12 +404,12 @@ final class WCC_Genesis_Widget_Column_Classes
 	/**
 	 * Find an attribute and add the data as a HTML string.
 	 *
-	 * @since 1.2
+	 * @since   1.2.0
 	 *
-	 * @param  string  $str            The HTML string.
-	 * @param  string  $attr           The attribute to find.
-	 * @param  string  $content_extra  The content that needs to be appended.
-	 * @param  bool    $unique         Do we need to filter for unique values?
+	 * @param   string  $str            The HTML string.
+	 * @param   string  $attr           The attribute to find.
+	 * @param   string  $content_extra  The content that needs to be appended.
+	 * @param   bool    $unique         Do we need to filter for unique values?
 	 *
 	 * @return string
 	 */
@@ -513,6 +524,98 @@ final class WCC_Genesis_Widget_Column_Classes
 	}
 
 	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @since   1.2.4
+	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @param   array[]  $links  The existing links.
+	 * @param   string   $file   The plugin file.
+	 * @return  array
+	 */
+	public function action_plugin_row_meta( $links, $file ) {
+		if ( self::$_basename === $file ) {
+			foreach ( $this->get_links() as $id => $link ) {
+				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$title = $icon . ' ' . esc_html( $link['title'] );
+				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
+			}
+		}
+		return $links;
+	}
+
+	/**
+	 * Plugin links.
+	 *
+	 * @since   1.2.4
+	 * @return  array[]
+	 */
+	public function get_links() {
+		static $links;
+		if ( ! empty( $links ) ) {
+			return $links;
+		}
+
+		$links = array(
+			'support' => array(
+				'title' => __( 'Support', OCS_DOMAIN ),
+				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-sos',
+				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
+			),
+			'slack' => array(
+				'title' => __( 'Slack', OCS_DOMAIN ),
+				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'icon'  => 'dashicons-format-chat',
+				'url'   => 'https://keraweb.slack.com/messages/plugin-gwcc/',
+			),
+			'review' => array(
+				'title' => __( 'Review', OCS_DOMAIN ),
+				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-star-filled',
+				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
+			),
+			'translate' => array(
+				'title' => __( 'Translate', OCS_DOMAIN ),
+				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-translation',
+				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
+			),
+			'issue' => array(
+				'title' => __( 'Report issue', OCS_DOMAIN ),
+				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-lightbulb',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
+			),
+			'docs' => array(
+				'title' => __( 'Documentation', OCS_DOMAIN ),
+				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'icon'  => 'dashicons-book-alt',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
+			),
+			'github' => array(
+				'title' => __( 'GitHub', OCS_DOMAIN ),
+				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'icon'  => 'dashicons-editor-code',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
+			),
+			'donate' => array(
+				'title' => __( 'Donate', OCS_DOMAIN ),
+				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-smiley',
+				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+			),
+			'plugins' => array(
+				'title' => __( 'Plugins', OCS_DOMAIN ),
+				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'icon'  => 'dashicons-admin-plugins',
+				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+			),
+		);
+
+		return $links;
+	}
+
+	/**
 	 * Load plugin textdomain.
 	 *
 	 * @since   1.1.3
@@ -590,8 +693,8 @@ final class WCC_Genesis_Widget_Column_Classes
  *
  * Returns the main instance of WCC_Genesis_Widget_Column_Classes to prevent the need to use globals.
  *
- * @since  1.1.3
- * @return WCC_Genesis_Widget_Column_Classes
+ * @since   1.1.3
+ * @return  \WCC_Genesis_Widget_Column_Classes
  */
 function genesis_widget_column_classes() {
 	return WCC_Genesis_Widget_Column_Classes::get_instance();

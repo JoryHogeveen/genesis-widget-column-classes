@@ -5,7 +5,7 @@ Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 
 Adds Genesis column classes to widgets.
 
@@ -46,6 +46,15 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 2. Frontend example ( `one-third + first` | `one-third` | `one-third` )
 
 == Changelog ==
+
+= 1.2.4 =
+
+*	**Enhancement:** UI improvement.
+*	**Enhancement:** Add support links on plugins overview page.
+*	**Maintenance:** Updated to CodeClimate v2.
+*	**Updated/Added:** Screenshot.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/7)
 
 = 1.2.3 =
 
