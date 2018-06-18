@@ -186,6 +186,9 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 
+		// Add links to plugins page.
+		add_action( 'plugin_row_meta', array( $this, 'action_plugin_row_meta' ), 10, 2 );
+
 		// widget_form_callback instead of in_widget_form because we want these fields to show BEFORE the other fields.
 		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 1, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
@@ -519,6 +522,98 @@ final class WCC_Genesis_Widget_Column_Classes
 		$done = true;
 
 		return $this->column_classes;
+	}
+
+	/**
+	 * Show row meta on the plugin screen.
+	 *
+	 * @since   1.2.4
+	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @param   array[]  $links  The existing links.
+	 * @param   string   $file   The plugin file.
+	 * @return  array
+	 */
+	public function action_plugin_row_meta( $links, $file ) {
+		if ( self::$_basename === $file ) {
+			foreach ( $this->get_links() as $id => $link ) {
+				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$title = $icon . ' ' . esc_html( $link['title'] );
+				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
+			}
+		}
+		return $links;
+	}
+
+	/**
+	 * Plugin links.
+	 *
+	 * @since   1.2.4
+	 * @return  array[]
+	 */
+	public function get_links() {
+		static $links;
+		if ( ! empty( $links ) ) {
+			return $links;
+		}
+
+		$links = array(
+			'support' => array(
+				'title' => __( 'Support', OCS_DOMAIN ),
+				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-sos',
+				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
+			),
+			'slack' => array(
+				'title' => __( 'Slack', OCS_DOMAIN ),
+				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'icon'  => 'dashicons-format-chat',
+				'url'   => 'https://keraweb.slack.com/messages/plugin-gwcc/',
+			),
+			'review' => array(
+				'title' => __( 'Review', OCS_DOMAIN ),
+				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-star-filled',
+				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
+			),
+			'translate' => array(
+				'title' => __( 'Translate', OCS_DOMAIN ),
+				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-translation',
+				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
+			),
+			'issue' => array(
+				'title' => __( 'Report issue', OCS_DOMAIN ),
+				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'icon'  => 'dashicons-lightbulb',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
+			),
+			'docs' => array(
+				'title' => __( 'Documentation', OCS_DOMAIN ),
+				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'icon'  => 'dashicons-book-alt',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
+			),
+			'github' => array(
+				'title' => __( 'GitHub', OCS_DOMAIN ),
+				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'icon'  => 'dashicons-editor-code',
+				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
+			),
+			'donate' => array(
+				'title' => __( 'Donate', OCS_DOMAIN ),
+				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'icon'  => 'dashicons-smiley',
+				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+			),
+			'plugins' => array(
+				'title' => __( 'Plugins', OCS_DOMAIN ),
+				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'icon'  => 'dashicons-admin-plugins',
+				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+			),
+		);
+
+		return $links;
 	}
 
 	/**
