@@ -49,6 +49,7 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 
 = 1.2.4 =
 
+*	**Enhancement:** UI improvement.
 *	**Enhancement:** Add support links on plugins overview page.
 *	**Maintenance:** Updated to CodeClimate v2.
 *	**Updated/Added:** Screenshot.
