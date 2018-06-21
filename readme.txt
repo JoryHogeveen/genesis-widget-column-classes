@@ -5,7 +5,7 @@ Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
 Tested up to: 4.9
 Requires PHP: 5.2.4
-Stable tag: 1.2.4
+Stable tag: 1.2.4.1
 
 Adds Genesis column classes to widgets.
 
