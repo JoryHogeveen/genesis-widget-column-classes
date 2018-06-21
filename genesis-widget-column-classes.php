@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4
+ * @version 1.2.4.1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.4
+ * Version:           1.2.4.1
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4
+ * @version 1.2.4.1
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -71,12 +71,20 @@ final class WCC_Genesis_Widget_Column_Classes
 	public static $_basename = '';
 
 	/**
+	 * The plugin i18n domain.
+	 *
+	 * @since  1.2.4.1
+	 * @var    string
+	 */
+	public static $_domain = 'genesis-widget-column-classes';
+
+	/**
 	 * Plugin version.
 	 *
 	 * @since  1.1.0
 	 * @var    string
 	 */
-	private $version = '1.2.4';
+	private $version = '1.2.4.1';
 
 	/**
 	 * User ignore nag key.
@@ -258,10 +266,10 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
-		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', 'genesis-widget-column-classes' ) . ': &nbsp;</label>';
+		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
 		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
 
-		$row .= '<option value="">- ' . __( 'none', 'genesis-widget-column-classes' ) . ' -</option>';
+		$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
 
 		foreach ( $this->get_column_classes() as $class_name ) {
 			if ( ! empty( $class_name ) ) {
@@ -271,7 +279,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$row .= '</select> &nbsp; ';
-		$row .= '<label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', 'genesis-widget-column-classes' ) . ': &nbsp;</label>';
+		$row .= '<label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', self::$_domain ) . ': &nbsp;</label>';
 		$row .= '<input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
 
@@ -557,56 +565,56 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		$links = array(
 			'support' => array(
-				'title' => __( 'Support', OCS_DOMAIN ),
-				'description' => __( 'Need support?', OCS_DOMAIN ),
+				'title' => __( 'Support', self::$_domain ),
+				'description' => __( 'Need support?', self::$_domain ),
 				'icon'  => 'dashicons-sos',
 				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
 			),
 			'slack' => array(
-				'title' => __( 'Slack', OCS_DOMAIN ),
-				'description' => __( 'Quick help via Slack', OCS_DOMAIN ),
+				'title' => __( 'Slack', self::$_domain ),
+				'description' => __( 'Quick help via Slack', self::$_domain ),
 				'icon'  => 'dashicons-format-chat',
 				'url'   => 'https://keraweb.slack.com/messages/plugin-gwcc/',
 			),
 			'review' => array(
-				'title' => __( 'Review', OCS_DOMAIN ),
-				'description' => __( 'Give 5 stars on WordPress.org!', OCS_DOMAIN ),
+				'title' => __( 'Review', self::$_domain ),
+				'description' => __( 'Give 5 stars on WordPress.org!', self::$_domain ),
 				'icon'  => 'dashicons-star-filled',
 				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', OCS_DOMAIN ),
-				'description' => __( 'Help translating this plugin!', OCS_DOMAIN ),
+				'title' => __( 'Translate', self::$_domain ),
+				'description' => __( 'Help translating this plugin!', self::$_domain ),
 				'icon'  => 'dashicons-translation',
 				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
 			),
 			'issue' => array(
-				'title' => __( 'Report issue', OCS_DOMAIN ),
-				'description' => __( 'Have ideas or a bug report?', OCS_DOMAIN ),
+				'title' => __( 'Report issue', self::$_domain ),
+				'description' => __( 'Have ideas or a bug report?', self::$_domain ),
 				'icon'  => 'dashicons-lightbulb',
 				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
 			),
 			'docs' => array(
-				'title' => __( 'Documentation', OCS_DOMAIN ),
-				'description' => __( 'Documentation', OCS_DOMAIN ),
+				'title' => __( 'Documentation', self::$_domain ),
+				'description' => __( 'Documentation', self::$_domain ),
 				'icon'  => 'dashicons-book-alt',
 				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
 			),
 			'github' => array(
-				'title' => __( 'GitHub', OCS_DOMAIN ),
-				'description' => __( 'Follow and/or contribute on GitHub', OCS_DOMAIN ),
+				'title' => __( 'GitHub', self::$_domain ),
+				'description' => __( 'Follow and/or contribute on GitHub', self::$_domain ),
 				'icon'  => 'dashicons-editor-code',
 				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
 			),
 			'donate' => array(
-				'title' => __( 'Donate', OCS_DOMAIN ),
-				'description' => __( 'Buy me a coffee!', OCS_DOMAIN ),
+				'title' => __( 'Donate', self::$_domain ),
+				'description' => __( 'Buy me a coffee!', self::$_domain ),
 				'icon'  => 'dashicons-smiley',
 				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
 			),
 			'plugins' => array(
-				'title' => __( 'Plugins', OCS_DOMAIN ),
-				'description' => __( 'Check out my other WordPress plugins', OCS_DOMAIN ),
+				'title' => __( 'Plugins', self::$_domain ),
+				'description' => __( 'Check out my other WordPress plugins', self::$_domain ),
 				'icon'  => 'dashicons-admin-plugins',
 				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
@@ -623,7 +631,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @return  void
 	 */
 	public function action_load_textdomain() {
-		load_plugin_textdomain( 'genesis-widget-column-classes', false, basename( dirname( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( self::$_domain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
@@ -647,7 +655,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function __clone() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to be cloned', 'genesis-widget-column-classes' ) ),
+			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to be cloned', self::$_domain ) ),
 			null
 		);
 	}
@@ -662,7 +670,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function __wakeup() {
 		_doing_it_wrong(
 			__FUNCTION__,
-			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to wake up', 'genesis-widget-column-classes' ) ),
+			esc_html( get_class( $this ) . ': ' . __( 'This class does not want to wake up', self::$_domain ) ),
 			null
 		);
 	}
@@ -679,7 +687,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function __call( $method = '', $args = array() ) {
 		_doing_it_wrong(
 			esc_html( get_class( $this ) . "::{$method}" ),
-			esc_html__( 'Method does not exist.', 'genesis-widget-column-classes' ),
+			esc_html__( 'Method does not exist.', self::$_domain ),
 			null
 		);
 		unset( $method, $args );

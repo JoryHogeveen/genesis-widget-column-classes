@@ -13,6 +13,12 @@ class PluginTest extends WP_UnitTestCase {
 		$this->assertTrue( is_plugin_active( TEST_GWCC_PLUGIN_PATH ) );
 	}
 
+	// Check for PHP errors
+	function test_general() {
+		$gwcc = genesis_widget_column_classes();
+		$gwcc->get_links();
+	}
+
 	// Check append_to_attribute() method
 	function test_append_to_attribute() {
 		$gwcc = genesis_widget_column_classes();

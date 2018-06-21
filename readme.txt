@@ -47,6 +47,10 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 
 == Changelog ==
 
+= 1.2.4.1 =
+
+*	**Fix:** PHP notice. [#9](https://github.com/JoryHogeveen/genesis-widget-column-classes/issues/9)
+
 = 1.2.4 =
 
 *	**Enhancement:** UI improvement.
