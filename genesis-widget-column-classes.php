@@ -315,7 +315,6 @@ final class WCC_Genesis_Widget_Column_Classes
 			}
 		}
 
-
 		if ( $this->select_multiple ) {
 			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
 			$row .= $row_column;
