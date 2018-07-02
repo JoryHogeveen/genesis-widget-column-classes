@@ -320,6 +320,39 @@ final class WCC_Genesis_Widget_Column_Classes
 			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
 			$row .= $row_column;
 			$row .= '</span></span> &nbsp; ';
+			?>
+<style>
+	#<?php echo $field_id; ?>.multiselect {
+		position: relative;
+		height: 26px;
+		width: 130px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	#<?php echo $field_id; ?>.multiselect label {
+		display: block;
+		line-height: 22px;
+		padding-right: 1em;
+		white-space: nowrap;
+	}
+	#<?php echo $field_id; ?>.multiselect span {
+		position: absolute;
+		border: 1px solid #ccc;
+		background: #fff;
+		height: 22px;
+		overflow: hidden;
+		overflow-y: scroll;
+		padding: 1px 3px;
+		width: 120px;
+		display: inline-block;
+	}
+	#<?php echo $field_id; ?>.multiselect:hover span {
+		height: auto;
+		max-height: 200px;
+		width: auto;
+	}
+</style>
+			<?php
 		} else {
 			$row .= '<select name="' . $field_name . '" id="' . $field_id . '">';
 			$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
