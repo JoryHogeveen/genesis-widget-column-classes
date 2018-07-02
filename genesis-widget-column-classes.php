@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4.1
+ * @version 1.3.0
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.4.1
+ * Version:           1.3-dev
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4.1
+ * @version 1.3.0
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -113,6 +113,14 @@ final class WCC_Genesis_Widget_Column_Classes
 		'four-sixths'   => 'four-sixths',
 		'five-sixths'   => 'five-sixths',
 	);
+
+	/**
+	 * Allow multiple classes to be selected.
+	 *
+	 * @since  1.3.0
+	 * @var    bool
+	 */
+	private $select_multiple = false;
 
 	/**
 	 * Current user object.
@@ -181,6 +189,16 @@ final class WCC_Genesis_Widget_Column_Classes
 		 */
 		$this->cap = apply_filters( 'genesis_widget_column_classes_capability', $this->cap );
 
+		/**
+		 * Allow multiple classes to be selected.
+		 * Default: false.
+		 *
+		 * @since  1.3.0
+		 * @param  bool
+		 * @return bool
+		 */
+		$this->select_multiple = apply_filters( 'genesis_widget_column_classes_select_multiple', true );
+
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
 
@@ -242,6 +260,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add options to the widgets.
 	 *
 	 * @since   0.1.0
+	 * @since   1.3.0  Multi select support.
 	 * @access  public
 	 * @param   array       $instance
 	 * @param   \WP_Widget  $widget
@@ -265,20 +284,49 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $instance;
 		}
 
+		$field_name = $widget->get_field_name( 'column-classes' );
+		$field_id = $widget->get_field_id( 'column-classes' );
+
 		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
-		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
 
-		$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
+		$row_column = '';
 
-		foreach ( $this->get_column_classes() as $class_name ) {
+		$instance['column-classes'] = explode( ' ', $instance['column-classes'] );
+		if ( ! $this->select_multiple ) {
+			$instance['column-classes'] = array( $instance['column-classes'][0] );
+		}
+
+		$column_classes = $this->get_column_classes();
+		if ( $this->select_multiple ) {
+			// Selected first.
+			$column_classes = array_replace( array_flip( $instance['column-classes'] ), $column_classes );
+		}
+
+		foreach ( $column_classes as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
-				$row .= '<option value="' . $class_name . '" ' . selected( $instance['column-classes'], $class_name, false ) . '>' . $class_label . '</option>';
+				$selected = in_array( $class_name, $instance['column-classes'], true );
+				if ( $this->select_multiple ) {
+					$row_column .= '<label><input type="checkbox" name="' . $field_name . '[]" value="' . $class_name . '" ' . checked( $selected, true, false ) . '> ' . $class_label . '</label>';
+				} else {
+					$row_column .= '<option value="' . $class_name . '" ' . selected( $selected, true, false ) . '>' . $class_label . '</option>';
+				}
 			}
 		}
 
-		$row .= '</select> &nbsp; ';
+
+		if ( $this->select_multiple ) {
+			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
+			$row .= $row_column;
+			$row .= '</span></span> &nbsp; ';
+		} else {
+			$row .= '<select name="' . $field_name . '" id="' . $field_id . '">';
+			$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
+			$row .= $row_column;
+			$row .= '</select> &nbsp; ';
+		}
+
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', self::$_domain ) . ': &nbsp;</label>';
 		$row .= '<input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
@@ -291,7 +339,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the new fields to the update instance.
 	 *
 	 * @since   0.1.0
-	 * @since   0.2.2   Do not save empty data.
+	 * @since   1.2.2   Do not save empty data.
+	 * @since   1.3.0   Multi select support.
 	 * @access  public
 	 * @param   array   $instance
 	 * @param   array   $new_instance
@@ -302,6 +351,10 @@ final class WCC_Genesis_Widget_Column_Classes
 		unset( $instance['column-classes-first'] );
 
 		if ( ! empty( $new_instance['column-classes'] ) ) {
+			if ( is_array( $new_instance['column-classes'] ) ) {
+				$new_instance['column-classes'] = array_filter( $new_instance['column-classes'] );
+				$new_instance['column-classes'] = implode( ' ', $new_instance['column-classes'] );
+			}
 			$instance['column-classes'] = esc_attr( $new_instance['column-classes'] );
 		}
 		if ( ! empty( $new_instance['column-classes-first'] ) ) {
