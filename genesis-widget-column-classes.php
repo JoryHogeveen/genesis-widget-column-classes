@@ -327,6 +327,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		width: 130px;
 		display: inline-block;
 		vertical-align: middle;
+		overflow: visible;
 	}
 	#<?php echo $field_id; ?>.multiselect label {
 		display: block;
@@ -339,16 +340,19 @@ final class WCC_Genesis_Widget_Column_Classes
 		border: 1px solid #ccc;
 		background: #fff;
 		height: 22px;
+		max-height: 22px;
 		overflow: hidden;
 		overflow-y: scroll;
 		padding: 1px 3px;
 		width: 120px;
 		display: inline-block;
+		transition: max-height .2s;
 	}
 	#<?php echo $field_id; ?>.multiselect:hover span {
 		height: auto;
 		max-height: 200px;
 		width: auto;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 	}
 </style>
 			<?php
