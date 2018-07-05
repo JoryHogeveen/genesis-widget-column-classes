@@ -699,7 +699,7 @@ final class WCC_Genesis_Widget_Column_Classes
 				'title' => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
 				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+				'url'   => 'https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes',
 			),
 			'plugins' => array(
 				'title' => __( 'Plugins', self::$_domain ),

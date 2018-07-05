@@ -1,6 +1,6 @@
 === Genesis Widget Column Classes ===
 Contributors: keraweb
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes
 Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
 Tested up to: 4.9
