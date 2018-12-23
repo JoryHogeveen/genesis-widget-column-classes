@@ -287,7 +287,18 @@ final class WCC_Genesis_Widget_Column_Classes
 		$field_name = $widget->get_field_name( 'column-classes' );
 		$field_id = $widget->get_field_id( 'column-classes' );
 
-		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
+		$background        = '#f5f5f5';
+		$border            = '#eee';
+		$background_select = '#fff';
+		$border_select     = '#ccc';
+		if ( $this->is_using_dark_mode() ) {
+			$background        = '#191f25';
+			$border            = '#000';
+			$background_select = '#000';
+			$border_select     = '#32373c';
+		}
+
+		$row  = '<p style="border: 1px solid ' . $border . '; padding: 5px 10px; background-color: ' . $background . ';">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
 
 		$row_column = '';
@@ -337,8 +348,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	}
 	#<?php echo $field_id; ?>.multiselect span {
 		position: absolute;
-		border: 1px solid #ccc;
-		background: #fff;
+		border: 1px solid <?php echo $border_select; ?>;
+		background: <?php echo $background_select; ?>;
 		height: 22px;
 		max-height: 22px;
 		overflow: hidden;
@@ -721,6 +732,20 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function action_load_textdomain() {
 		load_plugin_textdomain( self::$_domain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Compatibility with the Dark Mode plugin.
+	 *
+	 * @since   1.3.0
+	 * @access  public
+	 * @return  bool
+	 */
+	public function is_using_dark_mode() {
+		if ( is_callable( 'Dark_Mode::is_using_dark_mode' ) && Dark_Mode::is_using_dark_mode() ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
