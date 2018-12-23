@@ -304,14 +304,13 @@ final class WCC_Genesis_Widget_Column_Classes
 		$row_column = '';
 
 		$instance['column-classes'] = explode( ' ', $instance['column-classes'] );
-		if ( ! $this->select_multiple ) {
-			$instance['column-classes'] = array( $instance['column-classes'][0] );
-		}
+		$column_classes             = $this->get_column_classes();
 
-		$column_classes = $this->get_column_classes();
 		if ( $this->select_multiple ) {
 			// Selected first.
 			$column_classes = array_replace( array_flip( $instance['column-classes'] ), $column_classes );
+		} else {
+			$instance['column-classes'] = array( $instance['column-classes'][0] );
 		}
 
 		foreach ( $column_classes as $class_name ) {
