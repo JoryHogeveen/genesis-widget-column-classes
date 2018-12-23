@@ -271,7 +271,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		$instance = wp_parse_args(
 			(array) $instance,
 			array(
-				'column-classes' => '',
+				'column-classes'       => '',
 				'column-classes-first' => '',
 			)
 		);
@@ -285,7 +285,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$field_name = $widget->get_field_name( 'column-classes' );
-		$field_id = $widget->get_field_id( 'column-classes' );
+		$field_id   = $widget->get_field_id( 'column-classes' );
 
 		$background        = '#f5f5f5';
 		$border            = '#eee';
@@ -428,7 +428,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		if ( empty( $params[0]['widget_id'] ) ) {
 			return $params;
 		}
-		$widget_id  = $params[0]['widget_id'];
+		$widget_id = $params[0]['widget_id'];
 
 		if ( empty( $wp_registered_widgets[ $widget_id ] ) ) {
 			return $params;
@@ -467,6 +467,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$classes = $this->get_widget_classes( $widget_opt[ $widget_num ], array() );
+
 		$params[0] = $this->add_widget_classes( $params[0], $classes );
 		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 
@@ -575,7 +576,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		} else {
 			$str = preg_replace(
 				'/' . preg_quote( $attr, '/' ) . '/',
-				$attr . $content_extra . ' ' ,
+				$attr . $content_extra . ' ',
 				$str,
 				1
 			);
@@ -643,8 +644,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function action_plugin_row_meta( $links, $file ) {
 		if ( self::$_basename === $file ) {
 			foreach ( $this->get_links() as $id => $link ) {
-				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$icon  = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
 				$title = $icon . ' ' . esc_html( $link['title'] );
+
 				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
 			}
 		}
@@ -664,59 +666,59 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$links = array(
-			'support' => array(
-				'title' => __( 'Support', self::$_domain ),
+			'support'   => array(
+				'title'       => __( 'Support', self::$_domain ),
 				'description' => __( 'Need support?', self::$_domain ),
-				'icon'  => 'dashicons-sos',
-				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
+				'icon'        => 'dashicons-sos',
+				'url'         => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
 			),
-			'slack' => array(
-				'title' => __( 'Slack', self::$_domain ),
+			'slack'     => array(
+				'title'       => __( 'Slack', self::$_domain ),
 				'description' => __( 'Quick help via Slack', self::$_domain ),
-				'icon'  => 'dashicons-format-chat',
-				'url'   => 'https://keraweb.slack.com/messages/plugin-gwcc/',
+				'icon'        => 'dashicons-format-chat',
+				'url'         => 'https://keraweb.slack.com/messages/plugin-gwcc/',
 			),
-			'review' => array(
-				'title' => __( 'Review', self::$_domain ),
+			'review'    => array(
+				'title'       => __( 'Review', self::$_domain ),
 				'description' => __( 'Give 5 stars on WordPress.org!', self::$_domain ),
-				'icon'  => 'dashicons-star-filled',
-				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
+				'icon'        => 'dashicons-star-filled',
+				'url'         => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', self::$_domain ),
+				'title'       => __( 'Translate', self::$_domain ),
 				'description' => __( 'Help translating this plugin!', self::$_domain ),
-				'icon'  => 'dashicons-translation',
-				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
+				'icon'        => 'dashicons-translation',
+				'url'         => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
 			),
-			'issue' => array(
-				'title' => __( 'Report issue', self::$_domain ),
+			'issue'     => array(
+				'title'       => __( 'Report issue', self::$_domain ),
 				'description' => __( 'Have ideas or a bug report?', self::$_domain ),
-				'icon'  => 'dashicons-lightbulb',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
+				'icon'        => 'dashicons-lightbulb',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
 			),
-			'docs' => array(
-				'title' => __( 'Documentation', self::$_domain ),
+			'docs'      => array(
+				'title'       => __( 'Documentation', self::$_domain ),
 				'description' => __( 'Documentation', self::$_domain ),
-				'icon'  => 'dashicons-book-alt',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
+				'icon'        => 'dashicons-book-alt',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
 			),
-			'github' => array(
-				'title' => __( 'GitHub', self::$_domain ),
+			'github'    => array(
+				'title'       => __( 'GitHub', self::$_domain ),
 				'description' => __( 'Follow and/or contribute on GitHub', self::$_domain ),
-				'icon'  => 'dashicons-editor-code',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
+				'icon'        => 'dashicons-editor-code',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
 			),
-			'donate' => array(
-				'title' => __( 'Donate', self::$_domain ),
+			'donate'    => array(
+				'title'       => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
-				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes',
+				'icon'        => 'dashicons-smiley',
+				'url'         => 'https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes',
 			),
-			'plugins' => array(
-				'title' => __( 'Plugins', self::$_domain ),
+			'plugins'   => array(
+				'title'       => __( 'Plugins', self::$_domain ),
 				'description' => __( 'Check out my other WordPress plugins', self::$_domain ),
-				'icon'  => 'dashicons-admin-plugins',
-				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+				'icon'        => 'dashicons-admin-plugins',
+				'url'         => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
 		);
 
