@@ -197,7 +197,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		 * @param  bool
 		 * @return bool
 		 */
-		$this->select_multiple = apply_filters( 'genesis_widget_column_classes_select_multiple', true );
+		$this->select_multiple = apply_filters( 'genesis_widget_column_classes_select_multiple', false );
 
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
