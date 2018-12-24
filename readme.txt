@@ -1,11 +1,11 @@
 === Genesis Widget Column Classes ===
 Contributors: keraweb
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted
+Donate link: https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes
 Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
-Tested up to: 4.9
+Tested up to: 5.0
 Requires PHP: 5.2.4
-Stable tag: 1.2.4.1
+Stable tag: 1.3
 
 Adds Genesis column classes to widgets.
 
@@ -29,6 +29,11 @@ Since  1.2.2
 **Parameters:** `string` The default capability.  
 **Return:** `string` The new capability.  
 
+= Filter `genesis_widget_column_classes_select_multiple` =
+Allow multiple classes to be selected.  
+Since  1.3  
+**Return:** boolean.  
+
 You can use these filters inside your theme functions.php file or in a plugin.
 
 == Installation ==
@@ -46,6 +51,13 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 2. Frontend example ( `one-third + first` | `one-third` | `one-third` )
 
 == Changelog ==
+
+= 1.3 =
+
+*	**Feature:** New filter: `genesis_widget_column_classes_select_multiple` to allow multiple class selections. [#8](https://github.com/JoryHogeveen/genesis-widget-column-classes/issues/8) 
+*	**Compatibility:** [Dark Mode](https://nl.wordpress.org/plugins/dark-mode/) ([Github](https://github.com/danieltj27/Dark-Mode))
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/10)
 
 = 1.2.4.1 =
 

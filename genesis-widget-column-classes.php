@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4.1
+ * @version 1.3.0
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -11,7 +11,7 @@
  * Plugin Name:       Genesis Widget Column Classes
  * Plugin URI:        https://wordpress.org/plugins/genesis-widget-column-classes/
  * Description:       Add Genesis (old Bootstrap) column classes to widgets
- * Version:           1.2.4.1
+ * Version:           1.3
  * Author:            Jory Hogeveen
  * Author URI:        http://www.keraweb.nl
  * Text Domain:       genesis-widget-column-classes
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.2.4.1
+ * @version 1.3.0
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -113,6 +113,14 @@ final class WCC_Genesis_Widget_Column_Classes
 		'four-sixths'   => 'four-sixths',
 		'five-sixths'   => 'five-sixths',
 	);
+
+	/**
+	 * Allow multiple classes to be selected.
+	 *
+	 * @since  1.3.0
+	 * @var    bool
+	 */
+	private $select_multiple = false;
 
 	/**
 	 * Current user object.
@@ -181,6 +189,16 @@ final class WCC_Genesis_Widget_Column_Classes
 		 */
 		$this->cap = apply_filters( 'genesis_widget_column_classes_capability', $this->cap );
 
+		/**
+		 * Allow multiple classes to be selected.
+		 * Default: false.
+		 *
+		 * @since  1.3.0
+		 * @param  bool
+		 * @return bool
+		 */
+		$this->select_multiple = apply_filters( 'genesis_widget_column_classes_select_multiple', false );
+
 		// Get the current user.
 		$this->curUser = wp_get_current_user();
 
@@ -242,6 +260,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add options to the widgets.
 	 *
 	 * @since   0.1.0
+	 * @since   1.3.0  Multi select support.
 	 * @access  public
 	 * @param   array       $instance
 	 * @param   \WP_Widget  $widget
@@ -252,7 +271,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		$instance = wp_parse_args(
 			(array) $instance,
 			array(
-				'column-classes' => '',
+				'column-classes'       => '',
 				'column-classes-first' => '',
 			)
 		);
@@ -265,20 +284,95 @@ final class WCC_Genesis_Widget_Column_Classes
 			return $instance;
 		}
 
-		$row = '<p style="border: 1px solid #eee; padding: 5px 10px; background: #f5f5f5;">';
+		$field_name = $widget->get_field_name( 'column-classes' );
+		$field_id   = $widget->get_field_id( 'column-classes' );
+
+		$background        = '#f5f5f5';
+		$border            = '#eee';
+		$background_select = '#fff';
+		$border_select     = '#ccc';
+		if ( $this->is_using_dark_mode() ) {
+			$background        = '#191f25';
+			$border            = '#000';
+			$background_select = '#000';
+			$border_select     = '#32373c';
+		}
+
+		$row  = '<p style="border: 1px solid ' . $border . '; padding: 5px 10px; background-color: ' . $background . ';">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
-		$row .= '<select name="' . $widget->get_field_name( 'column-classes' ) . '" id="' . $widget->get_field_id( 'column-classes' ) . '">';
 
-		$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
+		$row_column = '';
 
-		foreach ( $this->get_column_classes() as $class_name ) {
+		$instance['column-classes'] = explode( ' ', $instance['column-classes'] );
+		$column_classes             = $this->get_column_classes();
+
+		if ( $this->select_multiple ) {
+			// Selected first.
+			$column_classes = array_replace( array_flip( $instance['column-classes'] ), $column_classes );
+		} else {
+			$instance['column-classes'] = array( $instance['column-classes'][0] );
+		}
+
+		foreach ( $column_classes as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
-				$row .= '<option value="' . $class_name . '" ' . selected( $instance['column-classes'], $class_name, false ) . '>' . $class_label . '</option>';
+				$selected    = in_array( $class_name, $instance['column-classes'], true );
+				if ( $this->select_multiple ) {
+					$row_column .= '<label><input type="checkbox" name="' . $field_name . '[]" value="' . $class_name . '" ' . checked( $selected, true, false ) . '> ' . $class_label . '</label>';
+				} else {
+					$row_column .= '<option value="' . $class_name . '" ' . selected( $selected, true, false ) . '>' . $class_label . '</option>';
+				}
 			}
 		}
 
-		$row .= '</select> &nbsp; ';
+		if ( $this->select_multiple ) {
+			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
+			$row .= $row_column;
+			$row .= '</span></span> &nbsp; ';
+			?>
+<style>
+	#<?php echo $field_id; ?>.multiselect {
+		position: relative;
+		height: 26px;
+		width: 130px;
+		display: inline-block;
+		vertical-align: middle;
+		overflow: visible;
+	}
+	#<?php echo $field_id; ?>.multiselect label {
+		display: block;
+		line-height: 22px;
+		padding-right: 1em;
+		white-space: nowrap;
+	}
+	#<?php echo $field_id; ?>.multiselect span {
+		position: absolute;
+		border: 1px solid <?php echo $border_select; ?>;
+		background: <?php echo $background_select; ?>;
+		height: 22px;
+		max-height: 22px;
+		overflow: hidden;
+		overflow-y: scroll;
+		padding: 1px 3px;
+		width: 120px;
+		display: inline-block;
+		transition: max-height .2s;
+	}
+	#<?php echo $field_id; ?>.multiselect:hover span {
+		height: auto;
+		max-height: 200px;
+		width: auto;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	}
+</style>
+			<?php
+		} else {
+			$row .= '<select name="' . $field_name . '" id="' . $field_id . '">';
+			$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
+			$row .= $row_column;
+			$row .= '</select> &nbsp; ';
+		}
+
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes-first' ) . '">' . __( 'First', self::$_domain ) . ': &nbsp;</label>';
 		$row .= '<input type="checkbox" value="1" name="' . $widget->get_field_name( 'column-classes-first' ) . '" id="' . $widget->get_field_id( 'column-classes-first' ) . '" ' . checked( $instance['column-classes-first'], 1, false ) . '>';
 		$row .= '</p>';
@@ -291,7 +385,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Add the new fields to the update instance.
 	 *
 	 * @since   0.1.0
-	 * @since   0.2.2   Do not save empty data.
+	 * @since   1.2.2   Do not save empty data.
+	 * @since   1.3.0   Multi select support.
 	 * @access  public
 	 * @param   array   $instance
 	 * @param   array   $new_instance
@@ -302,6 +397,10 @@ final class WCC_Genesis_Widget_Column_Classes
 		unset( $instance['column-classes-first'] );
 
 		if ( ! empty( $new_instance['column-classes'] ) ) {
+			if ( is_array( $new_instance['column-classes'] ) ) {
+				$new_instance['column-classes'] = array_filter( $new_instance['column-classes'] );
+				$new_instance['column-classes'] = implode( ' ', $new_instance['column-classes'] );
+			}
 			$instance['column-classes'] = esc_attr( $new_instance['column-classes'] );
 		}
 		if ( ! empty( $new_instance['column-classes-first'] ) ) {
@@ -328,7 +427,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		if ( empty( $params[0]['widget_id'] ) ) {
 			return $params;
 		}
-		$widget_id  = $params[0]['widget_id'];
+		$widget_id = $params[0]['widget_id'];
 
 		if ( empty( $wp_registered_widgets[ $widget_id ] ) ) {
 			return $params;
@@ -367,6 +466,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$classes = $this->get_widget_classes( $widget_opt[ $widget_num ], array() );
+
 		$params[0] = $this->add_widget_classes( $params[0], $classes );
 		// $params[0]['before_widget'] = str_replace( 'class="', 'class="'.$classes_extra , $params[0]['before_widget'] );
 
@@ -475,7 +575,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		} else {
 			$str = preg_replace(
 				'/' . preg_quote( $attr, '/' ) . '/',
-				$attr . $content_extra . ' ' ,
+				$attr . $content_extra . ' ',
 				$str,
 				1
 			);
@@ -543,8 +643,9 @@ final class WCC_Genesis_Widget_Column_Classes
 	public function action_plugin_row_meta( $links, $file ) {
 		if ( self::$_basename === $file ) {
 			foreach ( $this->get_links() as $id => $link ) {
-				$icon = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
+				$icon  = '<span class="dashicons ' . $link['icon'] . '" style="font-size: inherit; line-height: inherit; display: inline; vertical-align: text-top;"></span>';
 				$title = $icon . ' ' . esc_html( $link['title'] );
+
 				$links[ $id ] = '<a href="' . esc_url( $link['url'] ) . '" target="_blank">' . $title . '</a>';
 			}
 		}
@@ -564,59 +665,59 @@ final class WCC_Genesis_Widget_Column_Classes
 		}
 
 		$links = array(
-			'support' => array(
-				'title' => __( 'Support', self::$_domain ),
+			'support'   => array(
+				'title'       => __( 'Support', self::$_domain ),
 				'description' => __( 'Need support?', self::$_domain ),
-				'icon'  => 'dashicons-sos',
-				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
+				'icon'        => 'dashicons-sos',
+				'url'         => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/',
 			),
-			'slack' => array(
-				'title' => __( 'Slack', self::$_domain ),
+			'slack'     => array(
+				'title'       => __( 'Slack', self::$_domain ),
 				'description' => __( 'Quick help via Slack', self::$_domain ),
-				'icon'  => 'dashicons-format-chat',
-				'url'   => 'https://keraweb.slack.com/messages/plugin-gwcc/',
+				'icon'        => 'dashicons-format-chat',
+				'url'         => 'https://keraweb.slack.com/messages/plugin-gwcc/',
 			),
-			'review' => array(
-				'title' => __( 'Review', self::$_domain ),
+			'review'    => array(
+				'title'       => __( 'Review', self::$_domain ),
 				'description' => __( 'Give 5 stars on WordPress.org!', self::$_domain ),
-				'icon'  => 'dashicons-star-filled',
-				'url'   => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
+				'icon'        => 'dashicons-star-filled',
+				'url'         => 'https://wordpress.org/support/plugin/genesis-widget-column-classes/reviews/',
 			),
 			'translate' => array(
-				'title' => __( 'Translate', self::$_domain ),
+				'title'       => __( 'Translate', self::$_domain ),
 				'description' => __( 'Help translating this plugin!', self::$_domain ),
-				'icon'  => 'dashicons-translation',
-				'url'   => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
+				'icon'        => 'dashicons-translation',
+				'url'         => 'https://translate.wordpress.org/projects/wp-plugins/genesis-widget-column-classes',
 			),
-			'issue' => array(
-				'title' => __( 'Report issue', self::$_domain ),
+			'issue'     => array(
+				'title'       => __( 'Report issue', self::$_domain ),
 				'description' => __( 'Have ideas or a bug report?', self::$_domain ),
-				'icon'  => 'dashicons-lightbulb',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
+				'icon'        => 'dashicons-lightbulb',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/issues',
 			),
-			'docs' => array(
-				'title' => __( 'Documentation', self::$_domain ),
+			'docs'      => array(
+				'title'       => __( 'Documentation', self::$_domain ),
 				'description' => __( 'Documentation', self::$_domain ),
-				'icon'  => 'dashicons-book-alt',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
+				'icon'        => 'dashicons-book-alt',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/', //wiki
 			),
-			'github' => array(
-				'title' => __( 'GitHub', self::$_domain ),
+			'github'    => array(
+				'title'       => __( 'GitHub', self::$_domain ),
 				'description' => __( 'Follow and/or contribute on GitHub', self::$_domain ),
-				'icon'  => 'dashicons-editor-code',
-				'url'   => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
+				'icon'        => 'dashicons-editor-code',
+				'url'         => 'https://github.com/JoryHogeveen/genesis-widget-column-classes/tree/dev',
 			),
-			'donate' => array(
-				'title' => __( 'Donate', self::$_domain ),
+			'donate'    => array(
+				'title'       => __( 'Donate', self::$_domain ),
 				'description' => __( 'Buy me a coffee!', self::$_domain ),
-				'icon'  => 'dashicons-smiley',
-				'url'   => 'https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YGPLMLU7XQ9E8&lc=NL&item_name=Genesis%20Widget%20Column%20Classes&item_number=JWPP%2dGWCC&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted',
+				'icon'        => 'dashicons-smiley',
+				'url'         => 'https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes',
 			),
-			'plugins' => array(
-				'title' => __( 'Plugins', self::$_domain ),
+			'plugins'   => array(
+				'title'       => __( 'Plugins', self::$_domain ),
 				'description' => __( 'Check out my other WordPress plugins', self::$_domain ),
-				'icon'  => 'dashicons-admin-plugins',
-				'url'   => 'https://profiles.wordpress.org/keraweb/#content-plugins',
+				'icon'        => 'dashicons-admin-plugins',
+				'url'         => 'https://profiles.wordpress.org/keraweb/#content-plugins',
 			),
 		);
 
@@ -632,6 +733,20 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function action_load_textdomain() {
 		load_plugin_textdomain( self::$_domain, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Compatibility with the Dark Mode plugin.
+	 *
+	 * @since   1.3.0
+	 * @access  public
+	 * @return  bool
+	 */
+	public function is_using_dark_mode() {
+		if ( is_callable( 'Dark_Mode::is_using_dark_mode' ) && Dark_Mode::is_using_dark_mode() ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
