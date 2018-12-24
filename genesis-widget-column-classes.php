@@ -316,7 +316,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		foreach ( $column_classes as $class_name ) {
 			if ( ! empty( $class_name ) ) {
 				$class_label = $class_name;
-				$selected = in_array( $class_name, $instance['column-classes'], true );
+				$selected    = in_array( $class_name, $instance['column-classes'], true );
 				if ( $this->select_multiple ) {
 					$row_column .= '<label><input type="checkbox" name="' . $field_name . '[]" value="' . $class_name . '" ' . checked( $selected, true, false ) . '> ' . $class_label . '</label>';
 				} else {
