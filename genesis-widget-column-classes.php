@@ -84,7 +84,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1.0
 	 * @var    string
 	 */
-	private $version = '1.2.4.1';
+	private $version = '1.3.0';
 
 	/**
 	 * User ignore nag key.
