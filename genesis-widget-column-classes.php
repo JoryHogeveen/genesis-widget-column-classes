@@ -418,6 +418,48 @@ final class WCC_Genesis_Widget_Column_Classes
 	}
 
 	/**
+	 * Sort column classes based on selection.
+	 *
+	 * @since   1.4.0
+	 * @access  public
+	 * @param   array  $classes
+	 * @param   array  $selected
+	 * @return  array
+	 */
+	public function sort_selected_column_classes( $classes, $selected ) {
+		$values = array();
+		$groups = array();
+
+		// Separate option groups from single values.
+		foreach ( $classes as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$groups[ $key ] = $value;
+			} else {
+				$values[ $key ] = $value;
+			}
+		}
+
+		// Same keys as values.
+		$values   = array_combine( $values, $values );
+		$selected = array_combine( $selected, $selected );
+
+		foreach ( $selected as $class ) {
+			// Remove from groups.
+			foreach ( $groups as $group => $classes ) {
+				$key = array_search( $class, $classes, true );
+				if ( false !== $key ) {
+					unset( $groups[ $group ][ $key ] );
+				}
+			}
+		}
+
+		// Selected first.
+		$values = array_replace( $selected, $values );
+
+		return array_merge( $values, $groups );
+	}
+
+	/**
 	 * Add the new fields to the update instance.
 	 *
 	 * @since   0.1.0
