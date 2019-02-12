@@ -55,7 +55,7 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 = 1.3 =
 
 *	**Feature:** New filter: `genesis_widget_column_classes_select_multiple` to allow multiple class selections. [#8](https://github.com/JoryHogeveen/genesis-widget-column-classes/issues/8) 
-*	**Compatibility:** [Dark Mode](https://nl.wordpress.org/plugins/dark-mode/) ([Github](https://github.com/danieltj27/Dark-Mode))
+*	**Compatibility:** [Dark Mode](https://wordpress.org/plugins/dark-mode/) ([Github](https://github.com/danieltj27/Dark-Mode))
 
 Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/10)
 
