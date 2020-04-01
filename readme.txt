@@ -3,7 +3,7 @@ Contributors: keraweb
 Donate link: https://www.keraweb.nl/donate.php?for=genesis-widget-column-classes
 Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.2.4
 Stable tag: 1.3
 
