@@ -218,6 +218,8 @@ final class WCC_Genesis_Widget_Column_Classes
 		add_filter( 'widget_form_callback', array( $this, 'filter_widget_form_extend' ), 1, 2 );
 		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one.
+
+		add_action( 'admin_head', array( $this, 'action_admin_head' ) );
 	}
 
 	/**
@@ -287,18 +289,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		$field_name = $widget->get_field_name( 'column-classes' );
 		$field_id   = $widget->get_field_id( 'column-classes' );
 
-		$background        = '#f5f5f5';
-		$border            = '#eee';
-		$background_select = '#fff';
-		$border_select     = '#ccc';
-		if ( $this->is_using_dark_mode() ) {
-			$background        = '#191f25';
-			$border            = '#000';
-			$background_select = '#000';
-			$border_select     = '#32373c';
-		}
-
-		$row  = '<p style="border: 1px solid ' . $border . '; padding: 5px 10px; background-color: ' . $background . ';">';
+		$row  = '<p class="genesis-widget-column-classes">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
 
 		$row_column = '';
@@ -329,43 +320,6 @@ final class WCC_Genesis_Widget_Column_Classes
 			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
 			$row .= $row_column;
 			$row .= '</span></span> &nbsp; ';
-			?>
-<style>
-	#<?php echo $field_id; ?>.multiselect {
-		position: relative;
-		height: 26px;
-		width: 130px;
-		display: inline-block;
-		vertical-align: middle;
-		overflow: visible;
-	}
-	#<?php echo $field_id; ?>.multiselect label {
-		display: block;
-		line-height: 22px;
-		padding-right: 1em;
-		white-space: nowrap;
-	}
-	#<?php echo $field_id; ?>.multiselect span {
-		position: absolute;
-		border: 1px solid <?php echo $border_select; ?>;
-		background: <?php echo $background_select; ?>;
-		height: 22px;
-		max-height: 22px;
-		overflow: hidden;
-		overflow-y: scroll;
-		padding: 1px 3px;
-		width: 120px;
-		display: inline-block;
-		transition: max-height .2s;
-	}
-	#<?php echo $field_id; ?>.multiselect:hover span {
-		height: auto;
-		max-height: 200px;
-		width: auto;
-		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-	}
-</style>
-			<?php
 		} else {
 			$row .= '<select name="' . $field_name . '" id="' . $field_id . '">';
 			$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
@@ -629,6 +583,70 @@ final class WCC_Genesis_Widget_Column_Classes
 		$done = true;
 
 		return $this->column_classes;
+	}
+
+	/**
+	 * Add elements to the <head> of admin pages.
+	 *
+	 * @since   1.3.1
+	 * @access  public
+	 * @return  void
+	 */
+	public function action_admin_head() {
+
+		$background        = '#f5f5f5';
+		$border            = '#eee';
+		$background_select = '#fff';
+		$border_select     = '#ccc';
+		if ( $this->is_using_dark_mode() ) {
+			$background        = '#191f25';
+			$border            = '#000';
+			$background_select = '#000';
+			$border_select     = '#32373c';
+		}
+
+		?>
+<style type="text/css" id="genesis-widget-column-classes-css">
+	.widget .genesis-widget-column-classes {
+		border: 1px solid <?php echo $border; ?>;
+		padding: 5px 10px;
+		background-color: <?php echo $background; ?>;
+	}
+	.widget .genesis-widget-column-classes.multiselect {
+		position: relative;
+		height: 26px;
+		width: 130px;
+		display: inline-block;
+		vertical-align: middle;
+		overflow: visible;
+	}
+	.widget .genesis-widget-column-classes.multiselect label {
+		display: block;
+		line-height: 22px;
+		padding-right: 1em;
+		white-space: nowrap;
+	}
+	.widget .genesis-widget-column-classes.multiselect span {
+		position: absolute;
+		border: 1px solid <?php echo $border_select; ?>;
+		background: <?php echo $background_select; ?>;
+		height: 22px;
+		max-height: 22px;
+		overflow: hidden;
+		overflow-y: scroll;
+		padding: 1px 3px;
+		width: 120px;
+		display: inline-block;
+		transition: max-height .2s;
+	}
+	.widget .genesis-widget-column-classes.multiselect:hover span {
+		height: auto;
+		max-height: 200px;
+		width: auto;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	}
+</style>
+<?php
 	}
 
 	/**
