@@ -618,7 +618,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		padding: 5px 10px;
 		background-color: <?php echo $background; ?>;
 	}
-	.widget .genesis-widget-column-classes.multiselect {
+	.widget .genesis-widget-column-classes .multiselect {
 		position: relative;
 		height: 26px;
 		width: 130px;
@@ -626,13 +626,13 @@ final class WCC_Genesis_Widget_Column_Classes
 		vertical-align: middle;
 		overflow: visible;
 	}
-	.widget .genesis-widget-column-classes.multiselect label {
+	.widget .genesis-widget-column-classes .multiselect label {
 		display: block;
 		line-height: 22px;
 		padding-right: 1em;
 		white-space: nowrap;
 	}
-	.widget .genesis-widget-column-classes.multiselect span {
+	.widget .genesis-widget-column-classes .multiselect span {
 		position: absolute;
 		border: 1px solid <?php echo $border_select; ?>;
 		background: <?php echo $background_select; ?>;
@@ -645,7 +645,7 @@ final class WCC_Genesis_Widget_Column_Classes
 		display: inline-block;
 		transition: max-height .2s;
 	}
-	.widget .genesis-widget-column-classes.multiselect:hover span {
+	.widget .genesis-widget-column-classes .multiselect:hover span {
 		height: auto;
 		max-height: 200px;
 		width: auto;
