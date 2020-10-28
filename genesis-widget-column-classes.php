@@ -264,6 +264,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since   0.1.0
 	 * @since   1.3.0  Multi select support.
 	 * @access  public
+	 *
 	 * @param   array       $instance
 	 * @param   \WP_Widget  $widget
 	 * @return  array       $instance
@@ -659,6 +660,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   1.2.4
 	 * @see     \WP_Plugins_List_Table::single_row()
+	 * @access  public
+	 *
 	 * @param   array[]  $links  The existing links.
 	 * @param   string   $file   The plugin file.
 	 * @return  array
@@ -679,6 +682,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Plugin links.
 	 *
 	 * @since   1.2.4
+	 * @access  public
 	 * @return  array[]
 	 */
 	public function get_links() {
