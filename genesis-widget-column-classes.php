@@ -374,6 +374,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   0.1.0
 	 * @access  public
+	 *
 	 * @param   array   $params
 	 * @return  array   $params
 	 */
@@ -434,6 +435,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   1.2.2
 	 * @since   1.2.3  Refactor: Remove first $widget_instance parameter.
+	 * @access  public
+	 *
 	 * @param   array  $params           The widget (sidebar) params.
 	 * @param   array  $classes          (optional) Append to existing classes.
 	 * @return  array
@@ -469,13 +472,13 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Find an attribute and add the data as a HTML string.
 	 *
 	 * @since   1.2.0
+	 * @access  public
 	 *
 	 * @param   string  $str            The HTML string.
 	 * @param   string  $attr           The attribute to find.
 	 * @param   string  $content_extra  The content that needs to be appended.
 	 * @param   bool    $unique         Do we need to filter for unique values?
-	 *
-	 * @return string
+	 * @return  string
 	 */
 	public function append_to_attribute( $str, $attr, $content_extra, $unique = false ) {
 
@@ -545,6 +548,8 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Get the classes from a widget instance.
 	 *
 	 * @since   1.2.3
+	 * @access  public
+	 *
 	 * @param   array  $widget_instance  The widget instance.
 	 * @param   array  $classes          (optional) Extra classes.
 	 * @return  array
@@ -565,6 +570,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * Get the available column classes.
 	 *
 	 * @since   1.2.2
+	 * @access  public
 	 * @return  array
 	 */
 	public function get_column_classes() {
