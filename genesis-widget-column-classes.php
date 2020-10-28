@@ -594,6 +594,11 @@ final class WCC_Genesis_Widget_Column_Classes
 	 */
 	public function action_admin_head() {
 
+		$screen = get_current_screen();
+		if ( ! $screen || 'widgets' !== $screen->base ) {
+			return;
+		}
+
 		$background        = '#f5f5f5';
 		$border            = '#eee';
 		$background_select = '#fff';
