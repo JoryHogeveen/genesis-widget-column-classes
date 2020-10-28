@@ -3,7 +3,7 @@
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.3.0
+ * @version 1.3.1
  * @licence GPL-2.0+
  * @link    https://github.com/JoryHogeveen/genesis-widget-column-classes
  *
@@ -50,7 +50,7 @@ if ( ! class_exists( 'WCC_Genesis_Widget_Column_Classes' ) ) {
  * @author  Jory Hogeveen <info@keraweb.nl>
  * @package Genesis_Widget_Column_Classes
  * @since   0.1.0
- * @version 1.3.0
+ * @version 1.3.1
  */
 final class WCC_Genesis_Widget_Column_Classes
 {
@@ -84,7 +84,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @since  1.1.0
 	 * @var    string
 	 */
-	private $version = '1.3.0';
+	private $version = '1.3.1';
 
 	/**
 	 * User ignore nag key.
