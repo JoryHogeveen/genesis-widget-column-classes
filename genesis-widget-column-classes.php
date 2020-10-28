@@ -219,7 +219,8 @@ final class WCC_Genesis_Widget_Column_Classes
 		add_filter( 'widget_update_callback', array( $this, 'filter_widget_update_callback' ), 10, 2 );
 		add_filter( 'dynamic_sidebar_params', array( $this, 'filter_dynamic_sidebar_params' ), 99999 ); // Make sure to be the last one.
 
-		add_action( 'admin_head', array( $this, 'action_admin_head' ) );
+		add_action( 'admin_head', array( $this, 'print_inline_styles' ) );
+		add_action( 'customize_controls_print_styles', array( $this, 'print_inline_styles' ) );
 	}
 
 	/**
@@ -593,11 +594,13 @@ final class WCC_Genesis_Widget_Column_Classes
 	 * @access  public
 	 * @return  void
 	 */
-	public function action_admin_head() {
+	public function print_inline_styles() {
 
-		$screen = get_current_screen();
-		if ( ! $screen || 'widgets' !== $screen->base ) {
-			return;
+		if ( doing_action( 'admin_head' ) ) {
+			$screen = get_current_screen();
+			if ( ! $screen || 'widgets' !== $screen->base ) {
+				return;
+			}
 		}
 
 		$background        = '#f5f5f5';
