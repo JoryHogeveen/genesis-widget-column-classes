@@ -264,6 +264,7 @@ final class WCC_Genesis_Widget_Column_Classes
 	 *
 	 * @since   0.1.0
 	 * @since   1.3.0  Multi select support.
+	 * @since   1.4.0  Option group support.
 	 * @access  public
 	 *
 	 * @param   array       $instance
@@ -294,38 +295,16 @@ final class WCC_Genesis_Widget_Column_Classes
 		$row  = '<p class="genesis-widget-column-classes">';
 		$row .= '<label for="' . $widget->get_field_id( 'column-classes' ) . '">' . __( 'Width', self::$_domain ) . ': &nbsp;</label>';
 
-		$row_column = '';
-
-		$instance['column-classes'] = explode( ' ', $instance['column-classes'] );
-		$column_classes             = $this->get_column_classes();
-
-		if ( $this->select_multiple ) {
-			// Selected first.
-			$column_classes = array_replace( array_flip( $instance['column-classes'] ), $column_classes );
-		} else {
-			$instance['column-classes'] = array( $instance['column-classes'][0] );
-		}
-
-		foreach ( $column_classes as $class_name ) {
-			if ( ! empty( $class_name ) ) {
-				$class_label = $class_name;
-				$selected    = in_array( $class_name, $instance['column-classes'], true );
-				if ( $this->select_multiple ) {
-					$row_column .= '<label><input type="checkbox" name="' . $field_name . '[]" value="' . $class_name . '" ' . checked( $selected, true, false ) . '> ' . $class_label . '</label>';
-				} else {
-					$row_column .= '<option value="' . $class_name . '" ' . selected( $selected, true, false ) . '>' . $class_label . '</option>';
-				}
-			}
-		}
+		$column_class_options = $this->get_column_class_options( $instance, $widget );
 
 		if ( $this->select_multiple ) {
 			$row .= '<span id="' . $field_id . '" class="multiselect"><span>';
-			$row .= $row_column;
+			$row .= $column_class_options;
 			$row .= '</span></span> &nbsp; ';
 		} else {
 			$row .= '<select name="' . $field_name . '" id="' . $field_id . '">';
 			$row .= '<option value="">- ' . __( 'none', self::$_domain ) . ' -</option>';
-			$row .= $row_column;
+			$row .= $column_class_options;
 			$row .= '</select> &nbsp; ';
 		}
 
@@ -335,6 +314,103 @@ final class WCC_Genesis_Widget_Column_Classes
 
 		echo $row;
 		return $instance;
+	}
+
+	/**
+	 * Get the column class options HTML.
+	 *
+	 * @since   1.4.0
+	 * @access  public
+	 * @param   array       $instance
+	 * @param   \WP_Widget  $widget
+	 * @return  string
+	 */
+	public function get_column_class_options( $instance, $widget ) {
+
+		$field_name = $widget->get_field_name( 'column-classes' );
+
+		$instance['column-classes'] = explode( ' ', $instance['column-classes'] );
+		$column_classes             = $this->get_column_classes();
+
+		if ( $this->select_multiple ) {
+			// Selected first.
+			$column_classes = $this->sort_selected_column_classes( $column_classes, $instance['column-classes'] );
+		} else {
+			$instance['column-classes'] = array( $instance['column-classes'][0] );
+		}
+
+		$html = '';
+
+		foreach ( $column_classes as $group_name => $class_names ) {
+			if ( ! is_array( $class_names ) ) {
+				$group_name = false;
+			}
+			$class_names = (array) $class_names;
+			$options     = '';
+			foreach ( array_filter( $class_names ) as $class_name ) {
+				$class_label = $class_name;
+				$selected    = in_array( $class_name, $instance['column-classes'], true );
+				if ( $this->select_multiple ) {
+					$options .= '<label><input type="checkbox" name="' . $field_name . '[]" value="' . $class_name . '" ' . checked( $selected, true, false ) . '> ' . $class_label . '</label>';
+				} else {
+					$options .= '<option value="' . $class_name . '" ' . selected( $selected, true, false ) . '>' . $class_label . '</option>';
+				}
+			}
+			if ( $options ) {
+				if ( $group_name ) {
+					if ( $this->select_multiple ) {
+						$options = '<strong>' . $group_name . '</strong>' . $options . '';
+					} else {
+						$options = '<optgroup label="' . $group_name . '">' . $options . '</optgroup>';
+					}
+				}
+				$html .= $options;
+			}
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Sort column classes based on selection.
+	 *
+	 * @since   1.4.0
+	 * @access  public
+	 * @param   array  $classes
+	 * @param   array  $selected
+	 * @return  array
+	 */
+	public function sort_selected_column_classes( $classes, $selected ) {
+		$values = array();
+		$groups = array();
+
+		// Separate option groups from single values.
+		foreach ( $classes as $key => $value ) {
+			if ( is_array( $value ) ) {
+				$groups[ $key ] = $value;
+			} else {
+				$values[ $key ] = $value;
+			}
+		}
+
+		// Same keys as values.
+		$values   = array_combine( $values, $values );
+		$selected = array_combine( $selected, $selected );
+
+		foreach ( $selected as $class ) {
+			// Remove from groups.
+			foreach ( $groups as $group => $classes ) {
+				$key = array_search( $class, $classes, true );
+				if ( false !== $key ) {
+					unset( $groups[ $group ][ $key ] );
+				}
+			}
+		}
+
+		// Selected first.
+		$values = array_replace( $selected, $values );
+
+		return array_merge( $values, $groups );
 	}
 
 	/**
