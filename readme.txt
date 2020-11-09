@@ -15,6 +15,12 @@ As easy as it gets. Add column classes to widgets with a select box, check wheth
 
 I've built this plugin for the Genesis Framework, though it will work with any theme that uses the (old) Bootstrap column classes.
 
+You can also add your own classes through various filters to use this plugin with your theme's grid framework.
+
+= Compatibility (IMPORTANT!) =
+
+This plugin does **NOT** add CSS for these columns. It **ONLY** adds the column classes to your widgets. The actual CSS should be added in your theme.
+
 = Filter: `genesis_widget_column_classes` =
 Allows you to change the available column classes
 
