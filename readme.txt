@@ -5,7 +5,7 @@ Tags: genesis, bootstrap, column, grid, widget, sidebar, dynamik
 Requires at least: 3.1
 Tested up to: 5.5
 Requires PHP: 5.2.4
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 Adds Genesis column classes to widgets.
 
@@ -14,6 +14,12 @@ Adds Genesis column classes to widgets.
 As easy as it gets. Add column classes to widgets with a select box, check whether the widget is the first, and save!
 
 I've built this plugin for the Genesis Framework, though it will work with any theme that uses the (old) Bootstrap column classes.
+
+You can also add your own classes through various filters to use this plugin with your theme's grid framework.
+
+= Compatibility (IMPORTANT!) =
+
+This plugin does **NOT** add CSS for these columns. It **ONLY** adds the column classes to your widgets. The actual CSS should be added in your theme.
 
 = Filter: `genesis_widget_column_classes` =
 Allows you to change the available column classes
@@ -51,6 +57,12 @@ Or search for "Genesis Widget Column Classes" via your plugins menu.
 2. Frontend example ( `one-third + first` | `one-third` | `one-third` )
 
 == Changelog ==
+
+= 1.3.1 =
+
+*	**Enhancement:** Load widget admin CSS in site head instead of each widget separately.
+
+Detailed info: [PR on GitHub](https://github.com/JoryHogeveen/genesis-widget-column-classes/pull/14)
 
 = 1.3 =
 
